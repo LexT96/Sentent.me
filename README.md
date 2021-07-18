@@ -16,3 +16,23 @@ PyStonks analyzes the sentiment of the top posts of the most relevant investing 
 2. Add weighting for the title score.
 3. Improve sentiment accuracy (use a combination of the stanza sentiment and the vader algorithm and work with real values instead of classifing them into "+", "=" or "-".
 4. Add cryptocurrencies.
+
+## Getting Started
+1. Make sure you have python 3.9.6+ and pip installed on your machine.
+2. Clone this repository.
+``` 
+git clone https://github.com/LexT96/pyStonks
+```
+3. Navigate to your local version of this repo and create a virtual environment.
+```
+cd pystonks && python3 -m venv venv
+```
+4. Start your virtual environment and install the dependencies found in the requirements.txt
+```
+source venv/bin/activate
+pip install -r requirements.txt 
+```
+5. Run the tests
+```
+pytest -s
+```

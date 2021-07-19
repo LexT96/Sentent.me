@@ -1,3 +1,5 @@
+![CI](https://github.com/LexT96/pyStonks/actions/workflows/ci.yml/badge.svg)
+
 # PyStonks
 PyStonks analyzes the sentiment of the top posts of the most relevant investing subreddits if they relate to a stock. The backend is built using python and provides a REST-Api built in flask that is served to a ReactJs frontend.
 

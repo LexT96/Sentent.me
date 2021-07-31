@@ -9,5 +9,5 @@ def __get_vader_sentiment_of_title(title):
 def add_sentiment_to_posts(posts):
     for post in posts:
         vader_sentiment = __get_vader_sentiment_of_title(post.title)
-        setattr(post,"sentiment",vader_sentiment)
+        post.sentiment = vader_sentiment
     return posts

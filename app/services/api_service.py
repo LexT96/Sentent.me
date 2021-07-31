@@ -52,7 +52,7 @@ def map_titles_to_stocks(posts):
         sentence = doc.sentences[i]
         stock = __find_stock_in_sentence(sentence)
         if stock is not None:
-            setattr(posts[i],"stock",stock)
+            posts[i].stock = stock
     return posts
 
 def remove_posts_without_existing_stock(posts):

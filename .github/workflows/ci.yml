@@ -37,9 +37,9 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test with pytest
       run: |
-        pytest
+        coverage run -m pytest
     - name: "Upload coverage to Codecov"
       uses: codecov/codecov-action@v1
       with:
-        xtoken: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
+        token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
         fail_ci_if_error: true

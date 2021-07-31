@@ -16,8 +16,9 @@ PyStonks analyzes the sentiment of the top posts of the most relevant investing 
 ## Major ToDo
 1. Finish MVP.
 2. Add weighting for the title score.
-3. Improve sentiment accuracy (use a combination of the stanza sentiment and the vader algorithm and work with real values instead of classifing them into "+", "=" or "-".
-4. Add cryptocurrencies.
+3. Create crontab to update STOCK symbols and descriptions.
+4. Improve sentiment accuracy (use a combination of the stanza sentiment and the vader algorithm and work with real values instead of classifing them into "+", "=" or "-" or create a machine learning model based on vader.
+5. Add cryptocurrencies.
 
 ## Getting Started
 1. Make sure you have python 3.9.6+ and pip installed on your machine.

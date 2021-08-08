@@ -8,7 +8,7 @@ def index():
 
 @app.route('/fetch')
 def fetch():
-    return render_template("about.html")
+    return "Hello World"
 
 
 

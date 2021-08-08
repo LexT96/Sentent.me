@@ -6,8 +6,8 @@ def index():
     return "Hello"
 
 
-@app.route('/about')
-def about():
+@app.route('/fetch')
+def fetch():
     return render_template("about.html")
 
 

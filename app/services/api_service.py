@@ -10,10 +10,10 @@ def fetch_posts():
     yesterday = int((datetime.now() - timedelta(1)).replace(hour=18, minute=0, second=0, microsecond=0).timestamp())
     generator = api.search_submissions(after=yesterday, 
                                 subreddit='wallstreetbets',
-                                filter=['title','score'],
+                                filter=['title','score','created_utc'],
                                 limit=10)
     for submission in generator:
-        posts.append(Post(submission.title,submission.score))
+        posts.append(Post(submission.title,submission.score,None,None,submission.created_utc))
     return posts
 
 def __setup_stanza():

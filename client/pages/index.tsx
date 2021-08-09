@@ -30,21 +30,19 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Navbar />
-      <Container className="card p-2 mt-5">
-        <div className="text-center d-flex flex-column justify-content-center">
+      <Container className="glass mt-5">
+        <div className="d-flex w-100 h-100 flex-column justify-content-center align-items-center">
           <h1>PyStonks</h1>
           <h2>Enter a stock to get started</h2>
-          <Form className="d-flex my-5 flex-column align-items-center">
-            <div className="w-50">
+          <Form className="mt-5 w-50">
               <FormControl
                 type="search"
                 placeholder="Search"
                 aria-label="Search"
               />
               <Button className="w-100 mt-1">Search</Button>
-            </div>
           </Form>
-        </div>
+          </div>
       </Container>
     </div>
   );

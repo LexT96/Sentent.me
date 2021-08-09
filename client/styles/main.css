@@ -1,6 +1,7 @@
-.card {
-  background: rgba(33, 150, 243, 0.5);
+.glass {
+  background: rgba(33, 150, 243, 0.1);
   min-height: 75vh;
+  height: 75vh;
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);

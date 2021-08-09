@@ -5,7 +5,14 @@ from datetime import datetime, timedelta
 def __setup():
     client = pymongo.MongoClient("mongodb://localhost:27017/")
     db = client.stonks
-    return db
+    return db, client
+
+def get_all_stocks():
+    db, client = __setup()
+    stocks = list(db.stocks.find({}))
+    client.close()
+    return stocks
+
 
 def get_all_sentiments():
     db = __setup()
@@ -48,6 +55,29 @@ def get_yesterdays_sentiment_for_stock(stock):
         total_sentiment /= len(sentiments)
         return total_sentiment
     return None
+
+def insert_stocks(stocks):
+    db = __setup()
+    mapped_stocks = map(lambda stock: 
+        {"_id": stock["symbol"], "name": stock["name"]}, stocks
+        )
+    result = db.stocks.update_many({}, mapped_stocks, upsert=True)
+    return result
+
+def insert_prices_for_today(stocks):
+    db = __setup()
+    today = datetime.today().strftime('%d.%m.%Y')
+    db.entries.insert({"_id": today, "values": [] })
+    mapped_stocks = map(lambda stock: {
+        "symbol": stock["symbol"],
+        "price": stock["lastsale"],
+        "change": stock["pctchange"] }, stocks)
+    for stock in mapped_stocks:
+        db.entries.update(
+            {"_id": today}, 
+            {"$push": {"values": stock}}
+        )
+    return True
 
 
 

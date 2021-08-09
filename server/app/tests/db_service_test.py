@@ -20,6 +20,9 @@ def test_insert_many_sentiments():
 
 def test_remove_one_sentiment():
     pass
+
+def test_insert_stocks():
+    pass
     
 
 

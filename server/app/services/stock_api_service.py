@@ -14,3 +14,4 @@ def fetch_tickers():
             return stocks
         number_of_tries += 1
     return None
+

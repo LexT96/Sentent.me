@@ -16,6 +16,14 @@ const Navbar = () => {
               />
               <Button variant="outline-success">Search</Button>
             </Form>
+            <a href="https://github.com/LexT96/pyStonks">
+              <img
+                height={32}
+                width={32}
+                src="/assets/github.png"
+                alt="Github"
+              />
+            </a>
           </Container>
         </BSNavbar>
       </>

@@ -1,6 +1,6 @@
 import Head from "next/head";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 import styles from "../styles/Home.module.css";
 import {
   XYPlot,
@@ -11,6 +11,7 @@ import {
 } from "react-vis";
 import Navbar from "../components/Navbar";
 import { Button, Container, Form, FormControl, Row } from "react-bootstrap";
+import Searchbar from "../components/Searchbar";
 
 export async function getStaticProps() {
   const stocks = await fetch("http://localhost:5000/stocks").then((res) =>
@@ -21,7 +22,9 @@ export async function getStaticProps() {
   };
 }
 
-export default function Home() {
+export default function Home({ stocks }: {stocks: Stock[]}) {
+  const [selectedStock, setSelectedStock] = useState<Stock | null>(null);
+  console.log(selectedStock)
   return (
     <div>
       <Head>
@@ -35,14 +38,10 @@ export default function Home() {
           <h1>PyStonks</h1>
           <h2>Enter a stock to get started</h2>
           <Form className="mt-5 w-50">
-              <FormControl
-                type="search"
-                placeholder="Search"
-                aria-label="Search"
-              />
-              <Button className="w-100 mt-1">Search</Button>
+            <Searchbar stocks={stocks} setSelectedStock={setSelectedStock} />
+            <Button onClick={() => console.log(selectedStock)} className="w-100 mt-1">Search</Button>
           </Form>
-          </div>
+        </div>
       </Container>
     </div>
   );

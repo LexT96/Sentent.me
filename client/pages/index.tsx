@@ -12,6 +12,7 @@ import {
 import Navbar from "../components/Navbar";
 import { Button, Container, Form, FormControl, Row } from "react-bootstrap";
 import Searchbar from "../components/Searchbar";
+import Stock from "../components/Stock";
 
 export async function getStaticProps() {
   const stocks = await fetch("http://localhost:5000/stocks").then((res) =>
@@ -33,7 +34,7 @@ export default function Home({ stocks }: {stocks: Stock[]}) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Navbar />
-      <Container className="glass mt-5">
+      <Container className="glass mt-5 mb-5">
         <div className="d-flex w-100 h-100 flex-column justify-content-center align-items-center">
           <h1>PyStonks</h1>
           <h2>Enter a stock to get started</h2>
@@ -43,6 +44,8 @@ export default function Home({ stocks }: {stocks: Stock[]}) {
           </Form>
         </div>
       </Container>
+      <Stock stock={stocks[0]} />
+
     </div>
   );
 }

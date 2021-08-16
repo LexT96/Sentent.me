@@ -4,16 +4,16 @@ import Plot from "./Plot";
 import Timeframeselector from "./TimeframeSelector";
 import { DiscreteColorLegend } from "react-vis";
 
-const Stock = ({ stock }: { stock: Stock }) => {
+const Stock = ({ stock, entries }: { stock: Stock, entries: Entry[]}) => {
   const [timeframe, setTimeframe] = useState("W");
   return (
     <Container className="glass p-3 mb-3">
       <h2 className="text-center mb-3">
         {stock._id} ({stock.name})
       </h2>
-      <Row >
+      <Row>
         <Col md={10} className="d-flex align-items-center">
-        <Plot />
+          <Plot entries={entries} symbol={stock._id} />
         </Col>
         <Col md={2} className="d-flex flex-column align-items-center mt-1">
           <Timeframeselector

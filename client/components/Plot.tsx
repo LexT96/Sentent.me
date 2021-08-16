@@ -21,25 +21,31 @@ const mockEntries = [
 
 const DATE_FORMAT = "dd/MM/YYYY"
 
-const Plot = () => {
+const Plot = ({entries, symbol}: {entries: Entry[], symbol: string}) => {
     const [priceEntries, setPriceEntries] = useState<any>(null);
     const [sentimentEntries, setSentimentEntries] = useState<any>(null);
     const prepareEntries = () => {
-        const priceArray = [];
-        const sentimentArray = [];
-            for (let i = 0; i < mockEntries.length; i++) {
-            priceArray.push({
-              x: mockEntries[i]._id,
-              y: parseFloat(mockEntries[i].priceChange),
-            });
-            sentimentArray.push({
-              x: mockEntries[i]._id,
-              y: parseFloat(mockEntries[i].sentimentChange),
-            });
-        }
-        setPriceEntries(priceArray);
-        setSentimentEntries(sentimentArray);
-    }
+      const priceArray = [];
+      const sentimentArray = [];
+      for (let i = 1; i < entries.length; i++) {
+        const entryValue: Stockvalue | undefined = entries[i].values.find(
+          (v) => v.symbol == symbol
+        );
+        if (!entryValue) continue;
+        priceArray.push({
+          x: entries[i]._id,
+          y: parseFloat(entryValue.priceChange),
+        });
+        sentimentArray.push({
+          x: entries[i]._id,
+          y:
+            1 -
+            parseFloat(entryValue.sentiment) / parseFloat(entryValue.sentiment),
+        });
+      }
+      setPriceEntries(priceArray);
+      setSentimentEntries(sentimentArray);
+    };
 
     useEffect(() => {
         prepareEntries();
@@ -47,6 +53,8 @@ const Plot = () => {
 
     if (!priceEntries || !sentimentEntries) return <></>;
     console.log(priceEntries)
+    console.log(sentimentEntries)
+    console.log(entries)
 
   return (
     <XYPlot height={400} width={1000} margin={{bottom: 100, left: 100}} xType={"ordinal"}>

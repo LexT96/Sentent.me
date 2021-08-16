@@ -4,7 +4,7 @@ import { Button, Container, Form, FormControl, Navbar as BSNavbar } from "react-
 const Navbar = () => {
     return (
       <>
-        <BSNavbar bg="light">
+        <BSNavbar id="navbar" bg="light">
           <Container>
             <BSNavbar.Brand href="#home">PyStonks</BSNavbar.Brand>
             <Form className="d-flex">

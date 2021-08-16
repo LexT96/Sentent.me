@@ -1,5 +1,5 @@
 .glass {
-    background: rgba( 33, 150, 243, 0 );
+    background: rgba( 33, 150, 243, 0.05 );
     min-height: 80vh;
     height: 80vh;
     box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
@@ -7,4 +7,17 @@
     -webkit-backdrop-filter: blur( 8.0px );
     border-radius: 10px;
     border: 1px solid rgba( 255, 255, 255, 0.18 );
+}
+
+.glass-card {
+    box-shadow: 0 0 8px 0 rgba( 31, 38, 135, 0.37 );
+    border-radius: 10px;
+}
+
+#navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    
 }

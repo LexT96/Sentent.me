@@ -1,31 +1,40 @@
 import Head from "next/head";
-import Image from "next/image";
-import React, { useState } from "react";
-import styles from "../styles/Home.module.css";
-import {
-  XYPlot,
-  XAxis,
-  YAxis,
-  HorizontalGridLines,
-  LineSeries,
-} from "react-vis";
+import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import { Button, Container, Form, FormControl, Row } from "react-bootstrap";
 import Searchbar from "../components/Searchbar";
 import Stock from "../components/Stock";
+import StockListRow from "../components/StockListRow";
+import LegendStockListRow from "../components/LegendStockListRow";
 
 export async function getStaticProps() {
-  const stocks = await fetch("http://localhost:5000/stocks").then((res) =>
+
+  const entries = await fetch("http://localhost:5000/entries").then((res) =>
     res.json()
   );
   return {
-    props: { stocks }, // will be passed to the page component as props
+    props: {  entries }, // will be passed to the page component as props
   };
 }
 
-export default function Home({ stocks }: {stocks: Stock[]}) {
-  const [selectedStock, setSelectedStock] = useState<Stock | null>(null);
-  console.log(selectedStock)
+export default function Home({
+  entries,
+}: {
+  entries: Entry[];
+}) {
+  console.log(entries)
+  const [filteredEntries, setFilteredEntries] = useState<Entry[]>(
+    entries.slice(entries.length - 1)
+  );
+  const [sortBy, setSortBy] = useState<string>("mentions");
+  const [filteredValues, setFilteredValues] = useState<Stockvalue[]>(
+    filteredEntries
+      .map((entry: Entry) => entry.values)
+      .flat()
+      .sort((v1: Stockvalue, v2: Stockvalue) => {
+        return v1.mentions < v2.mentions ? 1 : -1;
+      })
+  );
   return (
     <div>
       <Head>
@@ -34,18 +43,25 @@ export default function Home({ stocks }: {stocks: Stock[]}) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Navbar />
-      <Container className="glass mt-5 mb-5">
+      <Container className="mt-5 mb-5">
         <div className="d-flex w-100 h-100 flex-column justify-content-center align-items-center">
           <h1>PyStonks</h1>
           <h2>Enter a stock to get started</h2>
           <Form className="mt-5 w-50">
-            <Searchbar stocks={stocks} setSelectedStock={setSelectedStock} />
-            <Button onClick={() => console.log(selectedStock)} className="w-100 mt-1">Search</Button>
+            {/* <Searchbar stocks={stocks} setSelectedStock={setSelectedStock} /> */}
+            {/* <Button
+              onClick={() => console.log(selectedStock)}
+              className="w-100 mt-1"
+            >
+              Search
+            </Button> */}
           </Form>
         </div>
+        <LegendStockListRow sortBy={sortBy} setSortBy={setSortBy} />
+        {filteredValues.map((values: Stockvalue) => (
+          <StockListRow key={values.symbol} values={values} />
+        ))}
       </Container>
-      <Stock stock={stocks[0]} />
-
     </div>
   );
 }

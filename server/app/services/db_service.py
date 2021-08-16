@@ -5,12 +5,11 @@ from datetime import datetime, timedelta
 def __setup():
     client = pymongo.MongoClient("mongodb://localhost:27017/")
     db = client.stonks
-    return db, client
+    return db
 
 def get_all_stocks():
-    db, client = __setup()
+    db = __setup()
     stocks = list(db.stocks.find({}))
-    client.close()
     return stocks
 
 
@@ -79,6 +78,15 @@ def insert_prices_for_today(stocks):
         )
     return True
 
+def insert_entry(entry):
+    db = __setup()
+    result = db.entries.insert(entry)
+    return result
+
+def get_entries():
+    db = __setup()
+    entries = list(db.entries.find({}))
+    return entries
 
 
 

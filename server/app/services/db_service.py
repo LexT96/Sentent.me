@@ -1,9 +1,10 @@
 import pymongo
 from datetime import datetime, timedelta
+import os
 
 
 def __setup():
-    client = pymongo.MongoClient("mongodb://localhost:27017/")
+    client = pymongo.MongoClient(f'mongodb+srv://root:{os.environ["MONGO_PASSWORD"]}@{os.environ["MONGO_ADDRESS"]}/stonks?retryWrites=true&w=majority')
     db = client.stonks
     return db
 

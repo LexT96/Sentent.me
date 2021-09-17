@@ -40,7 +40,7 @@ const Plot = ({entries, symbol}: {entries: Entry[], symbol: string}) => {
           x: entries[i]._id,
           y:
             1 -
-            parseFloat(entryValue.sentiment) / parseFloat(entryValue.sentiment),
+            entryValue.sentiment / entryValue.sentiment,
         });
       }
       setPriceEntries(priceArray);

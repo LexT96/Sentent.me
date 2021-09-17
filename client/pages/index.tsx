@@ -9,11 +9,11 @@ import LegendStockListRow from "../components/LegendStockListRow";
 
 export async function getStaticProps() {
 
-  const entries = await fetch("http://localhost:5000/entries").then((res) =>
+  const entries = await fetch("http://18.194.112.217:5000/entries").then((res) =>
     res.json()
   );
   return {
-    props: {  entries }, // will be passed to the page component as props
+    props: {  entries },
   };
 }
 
@@ -22,19 +22,16 @@ export default function Home({
 }: {
   entries: Entry[];
 }) {
-  console.log(entries)
   const [filteredEntries, setFilteredEntries] = useState<Entry[]>(
     entries.slice(entries.length - 1)
   );
-  const [sortBy, setSortBy] = useState<string>("mentions");
+  const [sortBy, setSortBy] = useState<keyof Stockvalue>("mentions");
   const [filteredValues, setFilteredValues] = useState<Stockvalue[]>(
     filteredEntries
       .map((entry: Entry) => entry.values)
       .flat()
-      .sort((v1: Stockvalue, v2: Stockvalue) => {
-        return v1.mentions < v2.mentions ? 1 : -1;
-      })
   );
+
   return (
     <div>
       <Head>
@@ -44,9 +41,8 @@ export default function Home({
       </Head>
       <Navbar />
       <Container className="mt-5 mb-5">
-        <div className="d-flex w-100 h-100 flex-column justify-content-center align-items-center">
-          <h1>PyStonks</h1>
-          <h2>Enter a stock to get started</h2>
+        <div className="d-flex pt-5 w-100 h-100 flex-column justify-content-center align-items-center">
+          <h1>Sentent.me</h1>
           <Form className="mt-5 w-50">
             {/* <Searchbar stocks={stocks} setSelectedStock={setSelectedStock} /> */}
             {/* <Button
@@ -58,9 +54,10 @@ export default function Home({
           </Form>
         </div>
         <LegendStockListRow sortBy={sortBy} setSortBy={setSortBy} />
-        {filteredValues.map((values: Stockvalue) => (
-          <StockListRow key={values.symbol} values={values} />
-        ))}
+        {filteredValues
+          .map((values: Stockvalue) => (
+            <StockListRow key={values.symbol} values={values} />
+          ))}
       </Container>
     </div>
   );

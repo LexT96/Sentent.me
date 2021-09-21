@@ -1,8 +1,8 @@
 ![CI](https://github.com/LexT96/pyStonks/actions/workflows/ci.yml/badge.svg) [![codecov](https://codecov.io/gh/LexT96/pyStonks/branch/main/graph/badge.svg?token=TNN1YQK16S)](https://codecov.io/gh/LexT96/pyStonks)
 
 <p align="center">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg" width="80px">
     <img src="https://upload.wikimedia.org/wikipedia/commons/8/8e/Nextjs-logo.svg" width="80px"/>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/4/4c/Typescript_logo_2020.svg" width="60px"/>
     <img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Flask_logo.svg" width="120px">
     <img src="https://webimages.mongodb.com/_com_assets/cms/MongoDB_Logo_FullColorBlack_RGB-4td3yuxzjs.png?auto=format%2Ccompress" width="140px"/>
 </p>

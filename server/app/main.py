@@ -24,26 +24,6 @@ def get():
     entries = get_entries()
     return jsonify(entries)
 
-@app.route("/test", methods=['GET'])
-def test():
-    posts = get_posts()
-    posts = add_sentiment_to_posts(posts)
-    print(len(posts))
-    grouped_posts = group_posts_by_stock(posts)
-    post_list = []
-    for group in grouped_posts:
-        new_group = []
-        for post in group:
-            new_group.append(json.dumps(post.__dict__))
-        post_list.append(new_group)
-    return jsonify(post_list)
-
-    # post_list = []
-    # for post in posts:
-    #     post_list.append(json.dumps(post.__dict__))
-    return posts
-
-
 @app.route('/fetch')
 def fetch():
     stocks = fetch_tickers()

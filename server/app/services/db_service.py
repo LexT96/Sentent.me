@@ -58,10 +58,7 @@ def get_yesterdays_sentiment_for_stock(stock):
 
 def insert_stocks(stocks):
     db = __setup()
-    mapped_stocks = map(lambda stock: 
-        {"_id": stock["symbol"], "name": stock["name"]}, stocks
-        )
-    result = db.stocks.update_many({}, mapped_stocks, upsert=True)
+    result = db.stocks.insert_many(stocks,False)
     return result
 
 def insert_prices_for_today(stocks):

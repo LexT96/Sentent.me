@@ -3,8 +3,7 @@ interface Stockvalue {
     name: string;
     priceChange: string;
     sentiment: number;
-    sentimentChange?: number;
-    pricePercentChange: number;
+    pricePercentChange: string;
     mentions: number;
     price: string;
 }

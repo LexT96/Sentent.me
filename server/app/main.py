@@ -24,33 +24,23 @@ def get():
     entries = get_entries()
     return jsonify(entries)
 
-@app.route('/fetch')
-def fetch():
-    stocks = fetch_tickers()
-    create_entry(stocks)
-    return "Hello World"
+# @app.route('/fetch')
+# def fetch():
+#     stocks = fetch_tickers()
+#     create_entry(stocks)
+#     return "Hello World"
 
-def create_entry(stock_data):
-    posts = get_posts()
-    posts = add_sentiment_to_posts(posts)
-    grouped_posts = group_posts_by_stock(posts)
-    sorted(grouped_posts, key=len, reverse=True)
-    entry_values = []
-    for group in grouped_posts:
-        symbol = group[0].stock
-        mentions = len(group)
-        sentiment = calculate_average_sentiment(group)
-        for stock in stock_data:
-            if stock["symbol"] == symbol:
-                #binary
-                entry_values.append({"symbol": symbol, "name": stock["name"], "price": stock["lastsale"], 
-                "priceChange": stock["netchange"], "pricePercentChange": stock["pctchange"],  "sentiment": sentiment, 
-                "mentions": mentions})
-                continue
-    today = datetime.today().strftime('%d.%m.%Y')
-    entry = {"_id": today, "values": entry_values}
-    insert_entry(entry)
-    pass
+# @app.route("/update")
+# def up():
+#     update_stock_values()
+#     return "Done"
+
+
+    
+
+
+
+
 
 
 

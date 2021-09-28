@@ -44,6 +44,8 @@ flake8 = "*"
 python-decouple = "*"
 yfinance = "*"
 decouple = "*"
+dnspython = "*"
+flask-apscheduler = "*"
 
 [dev-packages]
 

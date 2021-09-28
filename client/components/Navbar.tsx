@@ -4,9 +4,9 @@ import { Button, Container, Form, FormControl, Navbar as BSNavbar } from "react-
 const Navbar = () => {
     return (
       <>
-        <BSNavbar id="navbar" bg="light">
+        <BSNavbar style={{backgroundColor: "rgba(0,0,0,0)"}} id="navbar" >
           <Container>
-            <BSNavbar.Brand href="#home">PyStonks</BSNavbar.Brand>
+            <BSNavbar.Brand href="#home"><strong style={{color: "white"}}>Sentent.me</strong></BSNavbar.Brand>
             <Form className="d-flex">
               <FormControl
                 type="search"
@@ -19,7 +19,7 @@ const Navbar = () => {
             <a href="https://github.com/LexT96/pyStonks">
               <img
                 height={32}
-                width={32}
+                width={32}  
                 src="/assets/github.png"
                 alt="Github"
               />

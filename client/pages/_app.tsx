@@ -10,6 +10,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
+      <title>Sentent.me - Reddit sentiment analyzer</title>
         <link
           rel="stylesheet"
           href="https://unpkg.com/react-bootstrap-typeahead/css/Typeahead.css"

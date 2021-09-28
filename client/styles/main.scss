@@ -1,3 +1,21 @@
+$primary-dark: #7400b8;
+$primary: #6930c3;
+$primary-light: #5e60ce;
+$accent: #80ffdb;
+
+#top {
+  min-height: 85vh;
+  background:
+        linear-gradient(to left top, $primary-light 0%, $primary 50%, $primary-dark 100% ),
+        linear-gradient(rgba(0, 0, 0, 1), rgba(0, 0, 0, 1));
+}
+
+.active-timeframe {
+  $background-color: $primary-light !important;
+}
+
+
+
 .glass {
     background: rgba( 33, 150, 243, 0.05 );
     min-height: 80vh;
@@ -7,6 +25,67 @@
     -webkit-backdrop-filter: blur( 8.0px );
     border-radius: 10px;
     border: 1px solid rgba( 255, 255, 255, 0.18 );
+}
+
+#navbar {
+  background-color: $primary-light;
+  z-index: 999;
+  opacity: 1;
+}
+
+a {
+    text-decoration: none !important;
+    text-decoration: none !important;
+    color: black !important; 
+}
+
+.selected {
+  background-color: rgba(105, 48, 195, 0.2);
+}
+
+.main-text {
+    width: 10.5ch;
+    animation: typing 2s steps(22), blink .5s step-end infinite alternate;
+    white-space: nowrap;
+    overflow: hidden;
+    border-right: 3px solid;
+    font-family: monospace;
+    font-size: 2em;
+  }
+  
+  @keyframes typing {
+    from {
+      width: 0
+    }
+  }
+      
+  @keyframes blink {
+    50% {
+      border-color: transparent
+    }
+  }
+
+.legend-button {
+    padding: 0 !important;
+    background-color: #FFF !important;
+    color: #000 !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-repeat:no-repeat !important;
+    border: none !important;
+    cursor: pointer !important;
+    overflow: hidden !important;
+    outline:none !important;
+}
+
+.stock {
+  width: 100%;
+  min-height: 75vh;
+  padding-left: 0px;
+  margin-left: 0px;
+  margin-right: 0px;
+  padding-right: 0px;
 }
 
 .glass-card {

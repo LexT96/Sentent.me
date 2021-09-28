@@ -1,33 +1,114 @@
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import { Button, Col, Row } from "react-bootstrap";
 
-const StockListRow = ({ sortBy, setSortBy }: any) => {
+const StockListRow = ({
+  sortBy,
+  setSortBy,
+  sortDescending,
+  setSortDescending,
+  sortValues,
+}: any) => {
+  const handleSortClick = (value: keyof Stockvalue) => {
+    if (value === sortBy) {
+      setSortDescending(!sortDescending);
+      return;
+    }
+    setSortBy(value);
+    setSortDescending(true);
+    sortValues();
+  };
   return (
     <Row className="glass-card p-2 pt-3">
-      <Col className="">
-        <h4>Symbol</h4>
-      </Col>
-      <Col>
-      <Button onClick={() => {}}>
-        <div className="d-flex align-items-center">
-          <h4>Mentions</h4>
-          {sortBy === "mentions" && (
-            <img className="ms-2" width={15} height={12} src={"/assets/arrow-down.png"} alt="" />
-          )}
-        </div>
-        </Button>
-      </Col>
-      <Col>
-        <h4>Price</h4>
-      </Col>
-      <Col>
-        <h4>Pricechange</h4>
-      </Col>
-      <Col>
-        <h4>(in %)</h4>
-      </Col>
-      <Col>Sentimentscore</Col>
+      <Column
+        title="Symbol"
+        sortBy={sortBy}
+        sortDescending={sortDescending}
+        handleSortClick={handleSortClick}
+        type="symbol"
+      />
+      <Column
+        title="Mentions"
+        sortBy={sortBy}
+        sortDescending={sortDescending}
+        handleSortClick={handleSortClick}
+        type="mentions"
+      />
+      <Column
+        title="Price"
+        sortBy={sortBy}
+        sortDescending={sortDescending}
+        handleSortClick={handleSortClick}
+        type="price"
+      />
+      <Column
+        title="Pricechange ($)"
+        sortBy={sortBy}
+        sortDescending={sortDescending}
+        handleSortClick={handleSortClick}
+        type="priceChange"
+      />
+      <Column
+        title="Pricechange (%)"
+        sortBy={sortBy}
+        sortDescending={sortDescending}
+        handleSortClick={handleSortClick}
+        type="pricePercentChange"
+      />
+      <Column
+        title="Sentiment"
+        sortBy={sortBy}
+        sortDescending={sortDescending}
+        handleSortClick={handleSortClick}
+        type="sentiment"
+      />
     </Row>
+  );
+};
+
+const Column = ({
+  sortBy,
+  title,
+  handleSortClick,
+  type,
+  sortDescending
+}: {
+  sortBy: keyof Stockvalue;
+  title: string;
+  handleSortClick: any;
+  type: keyof Stockvalue;
+  sortDescending: boolean;
+}) => {
+  const sortIcon = () => {
+    if (sortDescending) {
+      return (
+        <img
+          className="ms-2"
+          width={15}
+          height={12}
+          src={"/assets/arrow-down.png"}
+          alt=""
+        />
+      );
+    }
+    return (
+      <img
+        className="ms-2"
+        width={15}
+        height={12}
+        src={"/assets/arrow-up.png"}
+        alt=""
+      />
+    );
+  };
+  return (
+    <Col>
+      <Button className="legend-button" onClick={() => handleSortClick(type)}>
+        <div className="d-flex align-items-center">
+          <h4>{title}</h4>
+          {sortBy === type && sortIcon()}
+        </div>
+      </Button>
+    </Col>
   );
 };
 

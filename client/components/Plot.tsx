@@ -7,6 +7,7 @@ import {
   LineSeries,
   XAxis,
   YAxis,
+  VerticalBarSeries,
 } from "react-vis";
 
 const mockEntries = [
@@ -21,49 +22,57 @@ const mockEntries = [
 
 const DATE_FORMAT = "dd/MM/YYYY"
 
-const Plot = ({entries, symbol}: {entries: Entry[], symbol: string}) => {
+const Plot = ({mappedEntries, symbol}: {mappedEntries: any[], symbol: string}) => {
     const [priceEntries, setPriceEntries] = useState<any>(null);
     const [sentimentEntries, setSentimentEntries] = useState<any>(null);
-    const prepareEntries = () => {
-      const priceArray = [];
-      const sentimentArray = [];
-      for (let i = 1; i < entries.length; i++) {
-        const entryValue: Stockvalue | undefined = entries[i].values.find(
-          (v) => v.symbol == symbol
-        );
-        if (!entryValue) continue;
-        priceArray.push({
-          x: entries[i]._id,
-          y: parseFloat(entryValue.priceChange),
-        });
-        sentimentArray.push({
-          x: entries[i]._id,
-          y:
-            1 -
-            entryValue.sentiment / entryValue.sentiment,
-        });
-      }
-      setPriceEntries(priceArray);
-      setSentimentEntries(sentimentArray);
-    };
+    const [maxValue, setMaxValue] = useState<number>(mappedEntries[0].value);
+    const [sentimentBorders, setSentimentBorders] = useState<number[]>([1000,-1000]);
 
     useEffect(() => {
+      const prepareEntries = () => {
+        const priceArray = [];
+        const sentimentArray = [];
+        for (let i = 1; i < mappedEntries.length; i++) {
+          if (!mappedEntries[i]) return;
+          const entryValue: Stockvalue = mappedEntries[i].value;
+          const sentiment = Math.round(entryValue.sentiment * 100);
+          const priceChange = parseFloat(
+            entryValue.pricePercentChange.split("%")[0]
+          );
+          priceArray.push({
+            x: mappedEntries[i]._id,
+            y: priceChange,
+          });
+          sentimentArray.push({
+            x: mappedEntries[i]._id,
+            y: sentiment ,
+            y0: 0,
+          });
+        }
+        setPriceEntries(priceArray);
+        setSentimentEntries(sentimentArray);
+        setSentimentBorders([
+          Math.min(-100,Math.min(...sentimentArray.map((s) => s.y))),
+          Math.max(...sentimentArray.map((s) => s.y)),
+        ]);
+      };
         prepareEntries();
-    }, [])
+    }, [mappedEntries, symbol])
 
-    if (!priceEntries || !sentimentEntries) return <></>;
-    console.log(priceEntries)
-    console.log(sentimentEntries)
-    console.log(entries)
+    console.log(sentimentBorders)
+
 
   return (
-    <XYPlot height={400} width={1000} margin={{bottom: 100, left: 100}} xType={"ordinal"}>
+    <XYPlot yDomain={[-100,100]} height={400} width={800} margin={{bottom: 100, left: 100, right: 100}} xType={"ordinal"}>
       <HorizontalGridLines style={{ stroke: "#B7E9ED" }} />
       <VerticalGridLines style={{ stroke: "#B7E9ED" }} />
-      <LineSeries data={priceEntries} />
-      <LineSeries style={{stroke: "#F00"}} data={sentimentEntries} />
-      <XAxis tickLabelAngle={-45} />
-      <YAxis tickFormat={v => `${v*100}%`}/>
+      <LineSeries style={{stroke: "#F00"}} data={priceEntries}  />
+      <VerticalBarSeries barWidth={0.1} data={sentimentEntries}  /> 
+      {/* <LineSeries data={sentimentEntries} /> */}
+      <LineSeries style={{stroke: "#FF0"}} data={[{x: mappedEntries[0]._id, y: 0}]}/>
+      <XAxis />
+      <YAxis tickFormat={v => `${v/10}%`}  title="Pricechange"/>
+      <YAxis orientation='right' title="Sentiment" /> 
     </XYPlot>
   );
 };

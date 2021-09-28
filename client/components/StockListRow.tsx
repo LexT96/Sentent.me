@@ -10,7 +10,7 @@ const StockListRow = ({
 }: {
   values: Stockvalue;
   selectedStock: string | null;
-  setSelectedStock: Dispatch<SetStateAction<string>>;
+  setSelectedStock: Dispatch<SetStateAction<string | null>>;
 }) => {
   const sentiment = Math.round(values.sentiment * 100);
   const priceChange = parseFloat(values.priceChange);
@@ -20,7 +20,7 @@ const StockListRow = ({
       onClick={() => {
         setSelectedStock(values.symbol);
       }}
-      className="cursor-pointer position-relative"
+      className="cursor-pointer position-rela tive"
       style={{zIndex: 1, position: "relative"}}
       rel="noopener noreferrer"
     >

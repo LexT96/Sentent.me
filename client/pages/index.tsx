@@ -34,7 +34,7 @@ export default function Home({
 }) {
   const [sortBy, setSortBy] = useState<keyof Stockvalue>("mentions");
   const [sortDescending, setSortDescending] = useState(true);
-  const [selectedStock, setSelectedStock] = useState<string>(null);
+  const [selectedStock, setSelectedStock] = useState<string | null>(null);
   const [values, setValues] = useState(yesterdaysValues);
   const [timeframe, setTimeframe] = useState("D");
   const router = useRouter();

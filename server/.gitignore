@@ -2,3 +2,4 @@ venv/
 env/
 app/__pycache__/*
 .env
+pystonks.pem

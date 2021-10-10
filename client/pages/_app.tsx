@@ -11,6 +11,20 @@ function MyApp({ Component, pageProps }: AppProps) {
     <>
       <Head>
       <title>Sentent.me - Reddit sentiment analyzer</title>
+      <meta property="og:title" content="Sentent.me - Reddit sentiment analyzer" />
+      <meta property="og:type" content="website" />
+      <meta property="og:url" content="https://www.sentent.me" />
+        <meta
+          property="og:description"
+          content="Analyzing the current stock sentiment based on posts 
+          on the most popular investing subreddits."
+        />
+      <meta
+          property="description"
+          name="description"
+          content="Analyzing the current stock sentiment based on posts 
+          on the most popular investing subreddits."
+        />
         <link
           rel="stylesheet"
           href="https://unpkg.com/react-bootstrap-typeahead/css/Typeahead.css"

@@ -46,6 +46,7 @@ yfinance = "*"
 decouple = "*"
 dnspython = "*"
 flask-apscheduler = "*"
+gunicorn = "*"
 
 [dev-packages]
 

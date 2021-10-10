@@ -3,6 +3,28 @@
   background: linear-gradient(to left top, #5e60ce 0%, #6930c3 50%, #7400b8 100%), linear-gradient(black, black);
 }
 
+.button {
+  color: #6930c3 !important;
+  border-color: #6930c3 !important;
+  background-color: white !important;
+}
+.button:hover {
+  color: white !important;
+  background-color: #6930c3 !important;
+}
+.button--active {
+  color: white !important;
+  background-color: #6930c3 !important;
+}
+
+.navbar {
+  background-color: #6930c3;
+}
+
+.navbar--hidden {
+  background-color: rgba(0, 0, 0, 0);
+}
+
 .glass {
   background: rgba(33, 150, 243, 0.05);
   min-height: 80vh;
@@ -12,12 +34,6 @@
   -webkit-backdrop-filter: blur(8px);
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.18);
-}
-
-#navbar {
-  background-color: #5e60ce;
-  z-index: 999;
-  opacity: 1;
 }
 
 a {
@@ -79,10 +95,12 @@ a {
 }
 
 #navbar {
+  z-index: 999;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
+  transition: background-color 0.5s;
 }
 
 /*# sourceMappingURL=main.css.map */

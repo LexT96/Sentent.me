@@ -12,14 +12,14 @@ on:
 defaults:
   run:
     working-directory: ./server
+  strategy:
+    fail-fast: true
+    matrix:
+      python-version: [3.9]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: true
-      matrix:
-        python-version: [3.7, 3.8, 3.9]
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python ${{ matrix.python-version }}
@@ -32,11 +32,8 @@ jobs:
         python -m pip install pipenv
         pipenv install
   lint:
+    needs: build
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: true
-      matrix:
-        python-version: [3.7, 3.8, 3.9]
     steps:
     - name: Lint with flake8
       run: |
@@ -45,11 +42,8 @@ jobs:
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         pipenv run flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
   test:
+    needs: build
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: true
-      matrix:
-        python-version: [3.7, 3.8, 3.9]
     steps:
     - name: Test with pytest
       run: |

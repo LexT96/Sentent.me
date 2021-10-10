@@ -12,14 +12,14 @@ on:
 defaults:
   run:
     working-directory: ./server
-    strategy:
-      fail-fast: true
-      matrix:
-        python-version: [3.9]
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        python-version: [3.9]
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python ${{ matrix.python-version }}
@@ -34,6 +34,10 @@ jobs:
   lint:
     needs: build
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        python-version: [3.9]
     steps:
     - name: Lint with flake8
       run: |
@@ -43,6 +47,10 @@ jobs:
         pipenv run flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
   test:
     needs: build
+    strategy:
+      fail-fast: true
+      matrix:
+        python-version: [3.9]
     runs-on: ubuntu-latest
     steps:
     - name: Test with pytest

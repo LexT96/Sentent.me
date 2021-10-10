@@ -12,10 +12,10 @@ on:
 defaults:
   run:
     working-directory: ./server
-  strategy:
-    fail-fast: true
-    matrix:
-      python-version: [3.9]
+    strategy:
+      fail-fast: true
+      matrix:
+        python-version: [3.9]
 
 jobs:
   build:

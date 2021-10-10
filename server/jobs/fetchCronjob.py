@@ -1,21 +1,20 @@
-from flask_apscheduler import APScheduler
 from app.services.stock_api_service import fetch_tickers
 from app.services.db_service import insert_stocks, insert_entry
 from app.services.reddit_service import get_posts, group_posts_by_stock
 from app.services.sentiment_service import add_sentiment_to_posts, calculate_average_sentiment
 
-@scheduler.task('cron', id='do_job_2', minute='*')
-def job():
-    retries = 0
-    while retries < 4:
-        try:
-            stocks = fetch_tickers()
-            create_entry(stocks)
-            update_stock_values(stocks)
-            return
-        except Exception as e:
-            print(e)
-            retries = retries + 1
+def fetchJob():
+    print("OK")
+    # retries = 0
+    # while retries < 4:
+    #     try:
+    #         stocks = fetch_tickers()
+    #         create_entry(stocks)
+    #         update_stock_values(stocks)
+    #         return
+    #     except Exception as e:
+    #         print(e)
+    #         retries = retries + 1
     
 
 

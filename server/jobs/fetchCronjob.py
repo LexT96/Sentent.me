@@ -5,17 +5,16 @@ from app.services.sentiment_service import add_sentiment_to_posts, calculate_ave
 from datetime import datetime
 
 def fetchJob():
-    print("OK")
-    # retries = 0
-    # while retries < 4:
-    #     try:
-    #         stocks = fetch_tickers()
-    #         create_entry(stocks)
-    #         update_stock_values(stocks)
-    #         return
-    #     except Exception as e:
-    #         print(e)
-    #         retries = retries + 1
+    retries = 0
+    while retries < 4:
+        try:
+            stocks = fetch_tickers()
+            create_entry(stocks)
+            update_stock_values(stocks)
+            return
+        except Exception as e:
+            print(e)
+            retries = retries + 1
     
 
 

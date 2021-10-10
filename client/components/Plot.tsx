@@ -8,6 +8,9 @@ import {
   XAxis,
   YAxis,
   VerticalBarSeries,
+  FlexibleXYPlot,
+  FlexibleWidthXYPlot,
+  Hint,
 } from "react-vis";
 
 const mockEntries = [
@@ -27,6 +30,7 @@ const Plot = ({mappedEntries, symbol}: {mappedEntries: any[], symbol: string}) =
     const [sentimentEntries, setSentimentEntries] = useState<any>(null);
     const [maxValue, setMaxValue] = useState<number>(mappedEntries[0].value);
     const [sentimentBorders, setSentimentBorders] = useState<number[]>([1000,-1000]);
+    const [value, setValue] = useState(null);
 
     useEffect(() => {
       const prepareEntries = () => {
@@ -41,7 +45,8 @@ const Plot = ({mappedEntries, symbol}: {mappedEntries: any[], symbol: string}) =
           );
           priceArray.push({
             x: mappedEntries[i]._id,
-            y: priceChange,
+            y: priceChange*4,
+            Price: entryValue.price,
           });
           sentimentArray.push({
             x: mappedEntries[i]._id,
@@ -63,17 +68,27 @@ const Plot = ({mappedEntries, symbol}: {mappedEntries: any[], symbol: string}) =
 
 
   return (
-    <XYPlot yDomain={[-100,100]} height={400} width={800} margin={{bottom: 100, left: 100, right: 100}} xType={"ordinal"}>
+    <FlexibleWidthXYPlot
+      onMouseLeave={() => setValue(false)}
+      height={400}
+      yDomain={[-100, 100]}
+      margin={{ bottom: 100, left: 100, right: 100 }}
+      xType={"ordinal"}
+    >
       <HorizontalGridLines style={{ stroke: "#B7E9ED" }} />
       <VerticalGridLines style={{ stroke: "#B7E9ED" }} />
-      <LineSeries style={{stroke: "#F00"}} data={priceEntries}  />
-      <VerticalBarSeries barWidth={0.1} data={sentimentEntries}  /> 
+      <LineSeries
+        onNearestXY={(value) => setValue(value)}
+        style={{ stroke: "#F00" }}
+        data={priceEntries}
+      />
+      <VerticalBarSeries barWidth={0.1} data={sentimentEntries} />
       {/* <LineSeries data={sentimentEntries} /> */}
-      <LineSeries style={{stroke: "#FF0"}} data={[{x: mappedEntries[0]._id, y: 0}]}/>
       <XAxis />
-      <YAxis tickFormat={v => `${v/10}%`}  title="Pricechange"/>
-      <YAxis orientation='right' title="Sentiment" /> 
-    </XYPlot>
+      {value && <Hint value={value} />}
+      <YAxis tickFormat={(v) => `${v / 4}%`} title="Pricechange" />
+      <YAxis orientation="right" title="Sentiment" />
+    </FlexibleWidthXYPlot>
   );
 };
 

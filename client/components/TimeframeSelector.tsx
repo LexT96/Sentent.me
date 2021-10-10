@@ -19,22 +19,22 @@ const Timeframeselector = ({
   };
 
   return (
-    <ButtonGroup aria-label="Basic example">
+    <ButtonGroup>
       <Button
+        className={`button${timeframe === "M" ? "--active" : ""}`}
         onClick={onMonthClick}
-        variant={timeframe === "M" ? "primary" : "outline-primary"}
       >
         Last month
       </Button>
       <Button
+        className={`button${timeframe === "W" ? "--active" : ""}`}
         onClick={onWeekClick}
-        variant={timeframe === "W" ? "primary" : "outline-primary"}
       >
         Last week
       </Button>
       <Button
+        className={`button${timeframe === "D" ? "--active" : ""}`}
         onClick={onDayClick}
-        variant={timeframe === "D" ? "primary" : "outline-primary"}
       >
         Today
       </Button>

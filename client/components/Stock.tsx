@@ -13,7 +13,7 @@ const Stock = ({ mappedEntries }: {mappedEntries: any}) => {
           {mappedEntries[0].value.symbol} ({mappedEntries[0].value.name})
         </h2>
         <Row>
-          <Col md={10} className="d-flex align-items-center">
+          <Col md={10} className="d-flex align-items-center h-100">
             <Plot
               mappedEntries={mappedEntries}
               symbol={mappedEntries[0].value.symbol}

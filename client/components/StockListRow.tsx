@@ -20,7 +20,7 @@ const StockListRow = ({
       onClick={() => {
         setSelectedStock(values.symbol);
       }}
-      className="cursor-pointer position-rela tive"
+      className="cursor-pointer position-relative"
       style={{zIndex: 1, position: "relative"}}
       rel="noopener noreferrer"
     >

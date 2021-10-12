@@ -3,6 +3,15 @@ $primary: #6930c3;
 $primary-light: #5e60ce;
 $accent: #80ffdb;
 
+@font-face {
+  font-family: "RobotoSlab";
+  src: url("/assets/fonts/RobotoSlab.ttf");
+}
+
+h1,h2,h3,h4,h5,h6,p,span,a {
+  font-family: "RobotoSlab";
+}
+
 #top {
   min-height: 85vh;
   background:
@@ -24,6 +33,15 @@ $accent: #80ffdb;
   }
 }
 
+.horizontal-scrollable {
+    overflow-x: auto;
+}
+
+button:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
 .navbar {
   background-color: $primary;
 
@@ -39,10 +57,12 @@ $accent: #80ffdb;
 
 
 
-.glass {
+.stock {
     background: rgba( 33, 150, 243, 0.05 );
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 0.5s ease;
     min-height: 80vh;
-    height: 80vh;
     box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
     backdrop-filter: blur( 8.0px );
     -webkit-backdrop-filter: blur( 8.0px );
@@ -96,18 +116,13 @@ a {
     outline:none !important;
 }
 
-.stock {
-  width: 100%;
-  min-height: 75vh;
-  padding-left: 0px;
-  margin-left: 0px;
-  margin-right: 0px;
-  padding-right: 0px;
-}
-
 .glass-card {
     box-shadow: 0 0 8px 0 rgba( 31, 38, 135, 0.37 );
     border-radius: 10px;
+    min-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    flex-wrap: nowrap !important;
 }
 
 #navbar {

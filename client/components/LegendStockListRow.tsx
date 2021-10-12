@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction } from "react";
 import { Button, Col, Row } from "react-bootstrap";
 
-const StockListRow = ({
+const LegendStockListRow = ({
   sortBy,
   setSortBy,
   sortDescending,
@@ -18,7 +18,7 @@ const StockListRow = ({
     sortValues();
   };
   return (
-    <Row className="glass-card p-2 pt-3">
+    <Row className="flex-nowrap glass-card align-items-center p-2 pt-3">
       <Column
         title="Symbol"
         sortBy={sortBy}
@@ -41,14 +41,14 @@ const StockListRow = ({
         type="price"
       />
       <Column
-        title="Pricechange ($)"
+        title="Pricechange $"
         sortBy={sortBy}
         sortDescending={sortDescending}
         handleSortClick={handleSortClick}
         type="priceChange"
       />
       <Column
-        title="Pricechange (%)"
+        title="Pricechange %"
         sortBy={sortBy}
         sortDescending={sortDescending}
         handleSortClick={handleSortClick}
@@ -101,7 +101,7 @@ const Column = ({
     );
   };
   return (
-    <Col>
+    <Col xs={4} md={3} lg={2}>
       <Button className="legend-button" onClick={() => handleSortClick(type)}>
         <div className="d-flex align-items-center">
           <h4>{title}</h4>
@@ -112,4 +112,4 @@ const Column = ({
   );
 };
 
-export default StockListRow;
+export default LegendStockListRow;

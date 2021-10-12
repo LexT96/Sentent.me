@@ -7,17 +7,13 @@ from datetime import datetime
 # initialize app
 app = Flask(__name__, instance_relative_config=True)
 
-# db settings
-app.config["MONGO_URI"] = "mongodb://localhost:27017/myDatabase"
-mongo = PyMongo(app)
-
 # handle routes
 from app import main
 
 # cron settings
 scheduler = APScheduler()
 scheduler.init_app(app)
-scheduler.add_job(id="fetchJob",func=fetchJob, trigger="cron", hour=8)
+scheduler.add_job(id="fetchJob",func=fetchJob, trigger="cron", hour=2)
 scheduler.start()
 
 # apply config

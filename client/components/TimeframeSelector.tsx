@@ -1,6 +1,13 @@
 import React, { Dispatch, SetStateAction, useCallback } from "react";
 import { Button, ButtonGroup, Nav } from "react-bootstrap";
 
+
+enum TimeFrame {
+  DAY = "D",
+  WEEK = "W",
+  MONTH = "M",
+}
+
 const Timeframeselector = ({
   timeframe,
   setTimeframe,
@@ -8,33 +15,27 @@ const Timeframeselector = ({
   timeframe: string;
   setTimeframe: Dispatch<SetStateAction<string>>;
 }) => {
-  const onMonthClick = () => {
-    setTimeframe("M");
-  };
-  const onWeekClick = () => {
-    setTimeframe("W");
-  };
-  const onDayClick = () => {
-    setTimeframe("D");
+  const onClick = (selectedTimeFrame: TimeFrame) => {
+    setTimeframe(selectedTimeFrame);
   };
 
   return (
     <ButtonGroup>
       <Button
         className={`button${timeframe === "M" ? "--active" : ""}`}
-        onClick={onMonthClick}
+        onClick={() => onClick(TimeFrame.MONTH)}
       >
         Last month
       </Button>
       <Button
         className={`button${timeframe === "W" ? "--active" : ""}`}
-        onClick={onWeekClick}
+        onClick={() => onClick(TimeFrame.WEEK)}
       >
         Last week
       </Button>
       <Button
         className={`button${timeframe === "D" ? "--active" : ""}`}
-        onClick={onDayClick}
+        onClick={() => onClick(TimeFrame.DAY)}
       >
         Today
       </Button>

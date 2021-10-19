@@ -3,6 +3,7 @@ from app.services.db_service import insert_stocks, insert_entry
 from app.services.reddit_service import get_posts, group_posts_by_stock
 from app.services.sentiment_service import add_sentiment_to_posts, calculate_average_sentiment
 from datetime import datetime
+import time
 
 def fetchJob():
     retries = 0
@@ -14,6 +15,7 @@ def fetchJob():
             return
         except Exception as e:
             print(e)
+            time.sleep(60)
             retries = retries + 1
     
 

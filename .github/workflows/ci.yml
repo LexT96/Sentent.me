@@ -16,6 +16,10 @@ defaults:
 jobs:
   CI:
     runs-on: ubuntu-latest
+    env:
+      MONGO_ADDRESS: ${{ secrets.MONGO_ADDRESS }}
+      MONGO_PASSWORD: ${{ secrets.MONGO_PASSWORD }}
+      STOCK_API_KEY: ${{ secrets.STOCK_API_KEY }}
     strategy:
       fail-fast: true
       matrix:
@@ -43,4 +47,4 @@ jobs:
       with:
         token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
         fail_ci_if_error: true
-        files: ./.coverage
+        files: ./server/.coverage

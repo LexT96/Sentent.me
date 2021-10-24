@@ -1,4 +1,5 @@
 import requests
+import os
 
 def fetch_tickers():
     url = 'https://api.nasdaq.com/api/screener/stocks?download=true'
@@ -25,4 +26,14 @@ def fetch_tickers():
             return stocks
         number_of_tries += 1
     return None 
+
+def fetch_stock_information(symbol):
+    url = f'https://financialmodelingprep.com/api/v3/profile/{symbol}?apikey={os.environ["STOCK_API_KEY"]}'
+    request = requests.get(url)
+    information = request.json()
+    if len(information) == 1:
+        information[0]["_id"] = information[0]["symbol"]
+        return information[0]
+    return None
+
 

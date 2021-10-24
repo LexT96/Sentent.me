@@ -13,6 +13,12 @@ def get_all_stocks():
     stocks = list(db.stocks.find({}))
     return stocks
 
+def insert_stock(stock):
+    db = __setup()
+    stocks = db.stocks
+    result = stocks.insert_one(stock)
+    return result
+
 
 def get_all_sentiments():
     db = __setup()

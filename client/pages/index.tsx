@@ -190,10 +190,10 @@ export default function Home({
 }
 
 export async function getStaticProps() {
-  const entries = await fetch("http://localhost:5000/entries").then((res) =>
+  const entries = await fetch("http://3.66.231.0/entries").then((res) =>
     res.json()
   );
-  const stocks = await fetch("http://localhost:5000/stocks").then((res) =>
+  const stocks = await fetch("http://3.66.231.0/stocks").then((res) =>
   res.json()
 );
   const yesterdaysEntry = entries[entries.length - 1];

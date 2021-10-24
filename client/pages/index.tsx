@@ -1,25 +1,37 @@
-import { useRouter } from "next/router";
 import React, { useCallback, useEffect, useState } from "react";
-import { Container } from "react-bootstrap";
+import { Container, Table } from "react-bootstrap";
+import Header from "../components/Header";
 import LegendStockListRow from "../components/LegendStockListRow";
 import Navbar from "../components/Navbar";
-import Stock from "../components/Stock";
 import StockList from "../components/StockList";
-import StockListRow from "../components/StockListRow";
+import Searchbar from "../components/Searchbar";
 import Timeframeselector from "../components/TimeframeSelector";
 
 export default function Home({
   yesterdaysValues,
   entries,
+  stocks
 }: {
   yesterdaysValues: Stockvalue[];
   entries: Entry[];
+  stocks: Stock[];
 }) {
   const [sortBy, setSortBy] = useState<keyof Stockvalue>("mentions");
   const [sortDescending, setSortDescending] = useState(true);
-  const [selectedStock, setSelectedStock] = useState<string | null>(null);
+  const [selectedStock, setSelectedStock] = useState<string>("");
   const [shownValues, setShownValues] = useState(yesterdaysValues);
   const [timeframe, setTimeframe] = useState("D");
+  const [width, setWidth] = useState(0);
+
+  const handleResize = () => {
+    setWidth(window.innerWidth);
+  }
+
+  useEffect(() => {
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [])
 
   const getEntriesInTimeframe = () => {
     if (timeframe === "D") return entries.slice(entries.length-1);
@@ -31,14 +43,10 @@ export default function Home({
     return entries.slice(entries.length - 30);
   };
 
-  useEffect(() => {
-    const matchingEntries = getEntriesInTimeframe();
-    const entryValues = matchingEntries
-      .map((entry: Entry) => entry.values)
-      .flat();
+  const groupStockValuesByStock = (stockValues: Stockvalue[]) => {
     let groups: StockvalueGroup[] = [];
-    for (let i = 0; i < entryValues.length; i++) {
-      const value = entryValues[i];
+    for (let i = 0; i < stockValues.length; i++) {
+      const value = stockValues[i];
       const groupSymbols = groups.map((group: Stockvalue) => group.symbol);
       const indexOfValue = groupSymbols.indexOf(value.symbol);
       if (indexOfValue === -1) {
@@ -56,31 +64,46 @@ export default function Home({
         };
       }
     }
-    const mappedGroups = groups.map((group: StockvalueGroup) => {
-      const sentiment =
-        Math.round((100 * group.sentiment) / group.numberOfValues) / 100;
-      const firstPrice = parseFloat(group.price.split("$")[1]);
-      const averagePrice = Math.round((parseFloat(group.cummulativePrice.split("$")[1]) / group.numberOfValues) * 100) / 100;
-      const lastPrice = group.lastPrice
-        ? parseFloat(group.lastPrice?.split("$")[1])
-        : firstPrice;
-      const priceChange = group.lastPrice
-        ? `${Math.round((lastPrice - firstPrice) * 100) / 100}$`
-        : group.priceChange;
-      const pricePercentChange = group.lastPrice
-        ? Math.round((1 - lastPrice / firstPrice) * 100) / 100 + "%"
-        : group.pricePercentChange;
-      return {
-        ...group,
-        sentiment,
-        price: "$" + averagePrice,
-        firstPrice: firstPrice,
-        lastPrice: lastPrice,
-        priceChange,
-        pricePercentChange,
-      };
+    return groups;
+  };
+
+  const summarizeStockValueGroup = (stockValueGroup: StockvalueGroup) => {
+    const averageSentiment =
+      Math.round(
+        (100 * stockValueGroup.sentiment) / stockValueGroup.numberOfValues
+      ) / 100;
+    const firstPrice = parseFloat(stockValueGroup.price.split("$")[1]);
+    const lastPrice = stockValueGroup.lastPrice
+      ? parseFloat(stockValueGroup.lastPrice?.split("$")[1])
+      : firstPrice;
+    const priceChange = stockValueGroup.lastPrice
+      ? `${(lastPrice - firstPrice).toFixed(2)}$`
+      : stockValueGroup.priceChange;
+    const pricePercentChange = stockValueGroup.lastPrice
+      ? (((lastPrice - firstPrice) / firstPrice) * 100).toFixed(2) + "%"
+      : parseFloat(stockValueGroup.pricePercentChange.split("%")[0]).toFixed(
+          2
+        ) + "%";
+    return {
+      ...stockValueGroup,
+      sentiment: averageSentiment,
+      firstPrice: firstPrice,
+      price: lastPrice + "$",
+      lastPrice: lastPrice,
+      priceChange,
+      pricePercentChange,
+    };
+  };
+
+  useEffect(() => {
+    const matchingEntries = getEntriesInTimeframe();
+    const stockValues = matchingEntries
+      .map((entry: Entry) => entry.values)
+      .flat();
+    const stockValueGroups = groupStockValuesByStock(stockValues);
+    const mappedGroups = stockValueGroups.map((group: StockvalueGroup) => {
+      return summarizeStockValueGroup(group);
     });
-    console.log(mappedGroups)
     setShownValues(mappedGroups);
   }, [timeframe]);
 
@@ -96,12 +119,12 @@ export default function Home({
       }
       if (sortBy === "price") {
         if (!sortDescending)
-          return parseFloat(value1.price.split("$")[1]) >
-            parseFloat(value2.price.split("$")[1])
+          return parseFloat(value1.price.split("$")[0]) >
+            parseFloat(value2.price.split("$")[0])
             ? 1
             : -1;
-        return parseFloat(value2.price.split("$")[1]) >
-          parseFloat(value1.price.split("$")[1])
+        return parseFloat(value2.price.split("$")[0]) >
+          parseFloat(value1.price.split("$")[0])
           ? 1
           : -1;
       }
@@ -132,38 +155,8 @@ export default function Home({
 
   return (
     <div>
-      <Navbar />
-      <div
-        id="top"
-        className="d-flex flex-column h-100 w-100 position-relative justify-content-center"
-      >
-        <Container>
-          <h1 style={{ color: "white" }}>Sentent.me</h1>
-          <h2 style={{ color: "white" }}>
-            Analyzing the current sentiment of the most popular investing
-            subreddits
-          </h2>
-        </Container>
-        <div
-          className="h-100 d-flex align-items-end position-absolute bottom-0"
-          style={{ marginBottom: "-2px" }}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 1440 320"
-            max-width="100%"
-            width="auto"
-          >
-            <path
-              fill="#ffffff"
-              fillOpacity="1"
-              d="M0,192L48,181.3C96,171,192,149,288,165.3C384,181,480,235,576,240C672,245,768,203,864,186.7C960,171,1056,181,1152,186.7C1248,192,1344,192,1392,192L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
-            ></path>
-          </svg>
-        </div>
-      </div>
+      <Header setSelectedStock={setSelectedStock} stocks={stocks}/>
       <Container className="mt-5 mb-5">
-        {/* <Searchbar setSelectedStock={setSelectedStock} /> */}
         <div className="d-flex justify-content-between align-items-center mb-3">
           <span>{shownValues.length} Stocks</span>
           <Timeframeselector
@@ -171,34 +164,42 @@ export default function Home({
             setTimeframe={setTimeframe}
           />
         </div>
-        <div className="p-3 p-md-2">
-        <LegendStockListRow
-          sortBy={sortBy}
-          setSortBy={setSortBy}
-          sortDescending={sortDescending}
-          setSortDescending={setSortDescending}
-          sortValues={sortValues}
-        />
-        <StockList
-          stockValues={sortValues()}
-          selectedStock={selectedStock}
-          setSelectedStock={setSelectedStock}
-          entries={entries}
-        />
-        </div>
+        <Table responsive="md" bordered={width < 768}>
+          <thead>
+            <LegendStockListRow
+              sortBy={sortBy}
+              setSortBy={setSortBy}
+              sortDescending={sortDescending}
+              setSortDescending={setSortDescending}
+              sortValues={sortValues}
+            />
+          </thead>
+          <tbody>
+            <StockList
+              stockValues={sortValues()}
+              selectedStock={selectedStock}
+              setSelectedStock={setSelectedStock}
+              entries={entries}
+              stocks={stocks}
+            />
+          </tbody>
+        </Table>
       </Container>
     </div>
   );
 }
 
 export async function getStaticProps() {
-  const entries = await fetch("http://18.194.112.217/entries").then((res) =>
+  const entries = await fetch("http://localhost:5000/entries").then((res) =>
     res.json()
   );
+  const stocks = await fetch("http://localhost:5000/stocks").then((res) =>
+  res.json()
+);
   const yesterdaysEntry = entries[entries.length - 1];
   const yesterdaysValues = yesterdaysEntry.values;
   return {
-    props: { yesterdaysValues, entries },
+    props: { yesterdaysValues, entries, stocks },
   };
 }
 

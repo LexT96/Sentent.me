@@ -18,7 +18,7 @@ const LegendStockListRow = ({
     sortValues();
   };
   return (
-    <Row className="flex-nowrap glass-card align-items-center p-2 pt-3">
+    <tr className="stock-table-header legend-row glass-card">
       <Column
         title="Symbol"
         sortBy={sortBy}
@@ -44,6 +44,7 @@ const LegendStockListRow = ({
         title="Pricechange $"
         sortBy={sortBy}
         sortDescending={sortDescending}
+        isLong
         handleSortClick={handleSortClick}
         type="priceChange"
       />
@@ -51,6 +52,7 @@ const LegendStockListRow = ({
         title="Pricechange %"
         sortBy={sortBy}
         sortDescending={sortDescending}
+        isLong
         handleSortClick={handleSortClick}
         type="pricePercentChange"
       />
@@ -61,7 +63,7 @@ const LegendStockListRow = ({
         handleSortClick={handleSortClick}
         type="sentiment"
       />
-    </Row>
+    </tr>
   );
 };
 
@@ -70,12 +72,14 @@ const Column = ({
   title,
   handleSortClick,
   type,
+  isLong,
   sortDescending
 }: {
   sortBy: keyof Stockvalue;
   title: string;
   handleSortClick: any;
   type: keyof Stockvalue;
+  isLong?: boolean,
   sortDescending: boolean;
 }) => {
   const sortIcon = () => {
@@ -101,14 +105,12 @@ const Column = ({
     );
   };
   return (
-    <Col xs={4} md={3} lg={2}>
-      <Button className="legend-button" onClick={() => handleSortClick(type)}>
-        <div className="d-flex align-items-center">
-          <h4>{title}</h4>
+    <th className={isLong ? "long" : ""} onClick={() => handleSortClick(type)}>
+        <div className="d-flex align-items-center my-auto">
+          <h4 className="text-center">{title}</h4>
           {sortBy === type && sortIcon()}
         </div>
-      </Button>
-    </Col>
+    </th>
   );
 };
 

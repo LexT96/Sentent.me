@@ -1,4 +1,4 @@
-![CI](https://github.com/LexT96/pyStonks/actions/workflows/ci.yml/badge.svg) [![codecov](https://codecov.io/gh/LexT96/pyStonks/branch/main/graph/badge.svg?token=TNN1YQK16S)](https://codecov.io/gh/LexT96/pyStonks)
+![CI](https://github.com/LexT96/pyStonks/actions/workflows/ci.yml/badge.svg) [![codecov](https://codecov.io/gh/LexT96/pyStonks/branch/main/graph/badge.svg?token=TNN1YQK16S)](https://codecov.io/gh/LexT96/pyStonks) [![Netlify Status](https://api.netlify.com/api/v1/badges/d84f1d0e-08ae-4c42-a30c-9b1294c9dad9/deploy-status)](https://app.netlify.com/sites/cranky-agnesi-a8667c/deploys)
 
 <p align="center">
     <img src="https://upload.wikimedia.org/wikipedia/commons/8/8e/Nextjs-logo.svg" width="80px"/>

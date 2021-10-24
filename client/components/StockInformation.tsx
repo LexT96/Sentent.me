@@ -4,11 +4,11 @@ import { Row, Col, ListGroup } from "react-bootstrap";
 const StockInformation = ({ stock }: { stock: Stock }) => {
   return (
     <Row className="p-3">
-      <Col md={3}>
+      <Col md={4} lg={3}>
         <ListGroup className="h-100">
           <ListGroup.Item className="h-100">
-            <div className="d-flex flex-column align-items-center pb-5 pt-2 h-100">
-              <h4 className="text-center">{stock.companyName}</h4>
+            <div className="d-flex flex-column align-items-md-center pb-5 pt-2 h-100">
+              <h4 className="text-md-center">{stock.companyName}</h4>
               {stock.image && (
                 <img
                   src={stock.image}
@@ -21,7 +21,7 @@ const StockInformation = ({ stock }: { stock: Stock }) => {
           </ListGroup.Item>
         </ListGroup>
       </Col>
-      <Col md={9}>
+      <Col md={8} lg={9}>
         <ListGroup as="ul">
           {stock.website && (
             <ListGroup.Item

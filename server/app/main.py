@@ -8,11 +8,6 @@ from app.services.db_service import insert_stocks, get_entries, get_all_stocks, 
 from app.services.reddit_service import get_posts, group_posts_by_stock
 from app.services.sentiment_service import add_sentiment_to_posts, calculate_average_sentiment
 
-@app.route('/', methods=['GET'])
-def index():
-    stocks = get_all_stocks()
-    return jsonify(stocks)
-
 @app.route("/stocks", methods=['GET'])
 def get_stocks():
     stocks = get_all_stocks()

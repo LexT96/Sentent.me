@@ -24,6 +24,12 @@ def handleGet():
     create_entry(stocks)
     return "Hello World"
 
+@app.route("/test", methods=["GET"])
+def testRoute():
+    stock_data = fetch_tickers()
+    stocks = create_entry(stock_data)
+    return jsonify(stocks)
+
 def create_entry(stock_data):
     posts = get_posts()
     stocks = get_all_stocks()
@@ -38,9 +44,7 @@ def create_entry(stock_data):
         for stock in stock_data:
             if stock["symbol"] == symbol:
                 #binary
-                entry_values.append({"symbol": symbol, "name": stock["name"], "price": stock["lastsale"], 
-                "priceChange": stock["netchange"], "pricePercentChange": stock["pctchange"],  "sentiment": sentiment, 
-                "mentions": mentions})
+                entry_values.append({**stock, "sentiment": sentiment, "mentions": mentions})
                 if not any(db_stock["_id"] == stock["symbol"] for db_stock in stocks):
                     stock_information = fetch_stock_information(stock["symbol"])
                     if stock_information:
@@ -48,7 +52,8 @@ def create_entry(stock_data):
                 break
     today = datetime.today().strftime('%d.%m.%Y')
     entry = {"_id": today, "values": entry_values}
-    insert_entry(entry)
+    return entry
+    # insert_entry(entry)
 
 # @app.route("/update")
 # def up():

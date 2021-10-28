@@ -18,24 +18,19 @@ const Stock = ({
   return (
     <div
       style={{ transform: `scaleY(${scale})` }}
-      className="stock py-2 px-3 mb-3 justify-content-center"
+      className="stock py-2 px-4 mb-3 justify-content-center"
     >
-      <Row>
-        <Col xs={9}>
           <h2 className="text-center py-3">
-            {mappedEntries[0].value.symbol} ({mappedEntries[0].value.name})
+            {mappedEntries[0].value.symbol} ({stock.companyName})
           </h2>
-        </Col>
-        <Col xs={3}></Col>
-      </Row>
       <Row className="flex-column-reverse pt-5 flex-md-row align-items-md-center">
-        <Col md={10} className="d-flex align-items-center">
+        <Col md={9} lg={10} className="d-flex  align-items-center">
           <Plot
             mappedEntries={mappedEntries}
             symbol={mappedEntries[0].value.symbol}
           />
         </Col>
-        <Col md={2} className="d-flex align-items-center">
+        <Col md={3} lg={2} className="d-flex justify-content-center mb-5 align-items-center">
           <DiscreteColorLegend
             items={[
               { title: "Sentimentscore", color: "#64dfdf" },

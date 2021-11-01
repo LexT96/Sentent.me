@@ -95,6 +95,11 @@ export default function Home({
     };
   };
 
+  const getSearchableStocks = useCallback(() => {
+    const valueSymbols = shownValues.map((value) => value.symbol);
+    return stocks.filter((stock) => valueSymbols.includes(stock._id));
+  }, [timeframe])
+
   useEffect(() => {
     const matchingEntries = getEntriesInTimeframe();
     const stockValues = matchingEntries
@@ -155,7 +160,7 @@ export default function Home({
 
   return (
     <div>
-      <Header setSelectedStock={setSelectedStock} stocks={stocks}/>
+      <Header setSelectedStock={setSelectedStock} stocks={getSearchableStocks()}/>
       <Container className="mt-5 mb-5">
         <div className="d-flex justify-content-between align-items-center mb-3">
           <span>{shownValues.length} Stocks</span>
@@ -190,10 +195,10 @@ export default function Home({
 }
 
 export async function getStaticProps() {
-  const entries = await fetch("http://3.66.231.0/entries").then((res) =>
+  const entries = await fetch("http://localhost:5000/entries").then((res) =>
     res.json()
   );
-  const stocks = await fetch("http://3.66.231.0/stocks").then((res) =>
+  const stocks = await fetch("http://localhost:5000/stocks").then((res) =>
   res.json()
 );
   const yesterdaysEntry = entries[entries.length - 1];

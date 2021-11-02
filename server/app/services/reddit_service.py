@@ -4,18 +4,29 @@ import stanza
 from app.Post import Post
 from app.services.db_service import get_all_stocks
 from collections import defaultdict
+import praw
+import os
 
 def fetch_posts():
-    api = PushshiftAPI()
+    reddit = praw.Reddit(client_id=os.environ["PRAW_ID"], \
+                     client_secret=os.environ["PRAW_SECRET"], \
+                     user_agent=os.environ["PRAW_USER_AGENT"], \
+                     username=os.environ["PRAW_USER"], \
+                     password=os.environ["PRAW_PASSWORD"])
     posts = []
-    two_days_ago = int((datetime.now() - timedelta(2)).replace(hour=18, minute=0, second=0, microsecond=0).timestamp())
-    yesterday = int((datetime.now() - timedelta(1)).replace(hour=18, minute=0, second=0, microsecond=0).timestamp())
-    generator = api.search_submissions(after=two_days_ago, before=yesterday, 
-                                subreddit="wallstreetbets,investing,stocks,wallstreetbetselite,wallstreetbetsnew",
-                                filter=['title','score','created_utc','subreddit'],
-                                )
-    for submission in generator:
-        posts.append(Post(submission.title,submission.score,submission.subreddit,submission.created_utc,None,None))
+    subredditNames = ["wallstreetbets", "investing", "stocks", "wallstreetbetselite", "wallstreetbetsnew", "mauerstrassenwetten"]
+    for subredditName in subredditNames:
+        subreddit = reddit.subreddit(subredditName)
+        for submission in subreddit.new(limit=500):
+            utcPostTime = submission.created
+            submissionDate = datetime.utcfromtimestamp(utcPostTime)
+            currentTime = datetime.utcnow()
+
+            submissionDelta = currentTime - submissionDate
+
+            submissionDelta = str(submissionDelta)
+            if 'day' not in submissionDelta:
+                posts.append(Post(submission.title,submission.score,submission.subreddit,submission.created_utc,None,None))
     return posts
 
 def __setup_stanza():

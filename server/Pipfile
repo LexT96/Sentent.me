@@ -48,6 +48,7 @@ dnspython = "*"
 flask-apscheduler = "*"
 gunicorn = "*"
 finviz = {git = "https://github.com/mariostoev/finviz"}
+praw = "*"
 
 [dev-packages]
 

@@ -20,17 +20,9 @@ def get():
 
 @app.route('/fetch', methods=['GET'])
 def handleGet():
-    # stocks = fetch_old_tickers()
-    # create_old_entry(stocks)
     stocks = fetch_tickers()
     entry = create_entry(stocks)
     return entry
-
-@app.route("/test", methods=["GET"])
-def testRoute():
-    stock_data = fetch_tickers()
-    stocks = create_entry(stock_data)
-    return jsonify(stocks)
 
 def create_entry(stock_data):
     posts = get_posts()
@@ -56,36 +48,8 @@ def create_entry(stock_data):
     entry = {"_id": today, "values": entry_values}
     insert_entry(entry)
     return entry
+ 
 
-def create_old_entry(stock_data):
-    posts = get_posts()
-    stocks = get_all_stocks()
-    posts = add_sentiment_to_posts(posts)
-    grouped_posts = group_posts_by_stock(posts)
-    sorted(grouped_posts, key=len, reverse=True)
-    entry_values = []
-    for group in grouped_posts:
-        symbol = group[0].stock
-        mentions = len(group)
-        sentiment = calculate_average_sentiment(group)
-        for stock in stock_data:
-            if stock["symbol"] == symbol:
-                #binary
-                entry_values.append({"symbol": symbol, "name": stock["name"], "price": stock["lastsale"], 
-                "priceChange": stock["netchange"], "pricePercentChange": stock["pctchange"],  "sentiment": sentiment, 
-                "mentions": mentions})
-                if not any(db_stock["_id"] == stock["symbol"] for db_stock in stocks):
-                    stock_information = fetch_stock_information(stock["symbol"])
-                    if stock_information:
-                        insert_stock(stock_information)
-                break
-    today = datetime.today().strftime('%d.%m.%Y')
-    entry = {"_id": today, "values": entry_values}
-    insert_entry(entry)
-# @app.route("/update")
-# def up():
-#     update_stock_values()
-#     return "Done"
 
 
     

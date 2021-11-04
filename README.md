@@ -11,21 +11,17 @@
 PyStonks analyzes the sentiment of the top posts of the most relevant investing subreddits if they relate to a stock. The backend is built using python and provides a REST-Api built in flask that is served to a ReactJs frontend.
 
 ## Workflow
-1. Every 24 hours a cronjob is executed to retrieve the titles and scores of the top 100 posts from the relevant subreddits using the <a href ="https://pushshift.io/">pushshift api</a>.
-2. The relationship between the words inside of a single title get analyzed to find the nominal subject (which in most cases equals the name of the relevant stock). This is done using the Stanford library <a href="https://github.com/stanfordnlp/stanza">stanza</a>.
-3. To find the relevant stock a .json file containing the symbols of all of the stocks traded at the NYSE is parsed and the stock symbols get compared to the the found nominal subject of the title.
-4. If the nsubj could not be mapped to a stock the title is filtered out.
-5. If a nsubj could be mapped to a stock the sentiment of the title is now analyzed using the <a href="https://github.com/cjhutto/vaderSentiment">VADER (Valence Aware Dictionary and sEntiment Reasoner) sentiment tool</a>. The sentiment score is mapped to "+" (positive sentiment), "=" (neutral sentiment) or "-" (negative sentiment). If you are intered in more information about the used algorithm I would recommend reading the following paper:
+1. Every 24 hours a cronjob is executed to scrape the titles and scores of all submissions and their comments from the relevant subreddits.
+2. The relationship between the words inside of a single title gets analyzed to filter out posts that don't relate to a specific stock and to retrieve the name of the stock. This is done using the Stanford library <a href="https://github.com/stanfordnlp/stanza">stanza</a>.
+3. After this all remaining posts will be analyzed regarding their sentiment towards the stock using the <a href="https://github.com/cjhutto/vaderSentiment">VADER (Valence Aware Dictionary and sEntiment Reasoner) sentiment tool</a>. The sentiment score ranges from -100 (very negative) to 100 (very positive). If you are intered in more information about the used algorithm I would recommend reading the following paper:
 >Hutto, C.J. & Gilbert, E.E. (2014). VADER: A Parsimonious Rule-based Model for Sentiment Analysis of Social Media Text. Eighth   >International Conference on Weblogs and Social Media (ICWSM-14). Ann Arbor, MI, June 2014.
-6. tbd
+5. Now the posts will be grouped using the stock and the average sentiment towards the stock.
+6. In the last step the stock groups and their values are provided to the NextJS frontend which uses them to generate graphs using React Vis.
 
 
 ## Major ToDo
-1. Finish MVP.
-2. Add weighting for the title score.
-3. Create crontab to update STOCK symbols and descriptions.
-4. Improve sentiment accuracy (use a combination of the stanza sentiment and the vader algorithm and work with real values instead of classifing them into "+", "=" or "-" or create a machine learning model based on vader.
-5. Add cryptocurrencies.
+1. Add Cryptos.
+2. Train own machine learning model.
 
 ## Getting Started
 1. Make sure you have python 3.9.6+ and pip installed on your machine.

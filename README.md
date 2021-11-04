@@ -19,9 +19,10 @@ PyStonks analyzes the sentiment of the top posts of the most relevant investing 
 6. In the last step the stock groups and their values are provided to the NextJS frontend which uses them to generate graphs using React Vis.
 
 
-## Major ToDo
-1. Add Cryptos.
-2. Train own machine learning model.
+## Major ToDos
+1. Better mobile layout
+1. Add Cryptos
+2. Train own machine learning model
 
 ## Getting Started
 1. Make sure you have python 3.9.6+ and pip installed on your machine.

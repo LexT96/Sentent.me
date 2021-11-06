@@ -12,8 +12,7 @@ def fetch_stock_information(symbol):
     return None
 
 def fetch_tickers():
-    filters = ['exch_nasd']
-    stock_list = Screener(filters=filters, table='Overview', order='price')
+    stock_list = Screener(table='Overview', order='price')
     mapped_list = []
     for stock in stock_list:
         try:

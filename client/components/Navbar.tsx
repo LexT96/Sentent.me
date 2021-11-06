@@ -1,23 +1,17 @@
 import React, { useEffect, useState } from "react";
 import {
-  Button,
-  Container,
-  Form,
-  FormControl,
-  Navbar as BSNavbar,
+  Container, Navbar as BSNavbar
 } from "react-bootstrap";
-import Searchbar from "./Searchbar";
 
 const Navbar = () => {
   const [isTransparent, setIsTransparent] = useState(true);
+
   const handleScroll = (e: Event) => {
     if (window.pageYOffset > window.innerHeight * 0.6) {
       setIsTransparent(false);
       return;
     }
-    if (window.pageYOffset < window.innerHeight * 0.6) {
-      setIsTransparent(true);
-    }
+    setIsTransparent(true);
   };
 
   const onBrandingClick = () => {
@@ -28,6 +22,7 @@ const Navbar = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
   return (
     <>
       <BSNavbar

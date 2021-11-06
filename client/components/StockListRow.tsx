@@ -1,7 +1,4 @@
-import React, { SetStateAction, Dispatch } from "react";
-import { Col, Row } from "react-bootstrap";
-import Link from "next/link";
-import { useRouter } from "next/router";
+import React, { Dispatch, SetStateAction } from "react";
 
 const StockListRow = ({
   values,
@@ -14,18 +11,19 @@ const StockListRow = ({
 }) => {
   const sentiment = Math.round(values.sentiment * 100);
   const priceChange = parseFloat(values.priceChange);
+  const onRowClick = () => {
+    if (values.symbol === selectedStock) {
+      setSelectedStock("");
+      return;
+    }
+    setSelectedStock(values.symbol);
+  }
   return (
     <tr
       className="glass-card"
       id={values.symbol}
       style={{ cursor: "pointer" }}
-      onClick={() => {
-        if (values.symbol === selectedStock) {
-          setSelectedStock("");
-          return;
-        }
-        setSelectedStock(values.symbol);
-      }}
+      onClick={onRowClick}
     >
       <td>
         <h4>${values.symbol}</h4>

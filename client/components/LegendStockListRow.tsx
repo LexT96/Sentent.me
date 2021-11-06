@@ -1,5 +1,4 @@
-import React, { Dispatch, SetStateAction } from "react";
-import { Button, Col, Row } from "react-bootstrap";
+import React, { Dispatch, SetStateAction, useCallback } from "react";
 
 const LegendStockListRow = ({
   sortBy,
@@ -7,16 +6,26 @@ const LegendStockListRow = ({
   sortDescending,
   setSortDescending,
   sortValues,
-}: any) => {
-  const handleSortClick = (value: keyof Stockvalue) => {
-    if (value === sortBy) {
-      setSortDescending(!sortDescending);
-      return;
-    }
-    setSortBy(value);
-    setSortDescending(true);
-    sortValues();
-  };
+}: {
+  sortBy: keyof Stockvalue;
+  setSortBy: Dispatch<SetStateAction<keyof Stockvalue>>;
+  sortDescending: boolean;
+  setSortDescending: Dispatch<SetStateAction<boolean>>;
+  sortValues: () => void;
+}) => {
+  const handleSortClick = useCallback(
+    (value: keyof Stockvalue) => {
+      if (value === sortBy) {
+        setSortDescending(!sortDescending);
+        return;
+      }
+      setSortBy(value);
+      setSortDescending(true);
+      sortValues();
+    },
+    [sortBy, sortDescending]
+  );
+
   return (
     <tr className="stock-table-header legend-row glass-card">
       <Column

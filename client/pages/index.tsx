@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Container, Table } from "react-bootstrap";
 import Header from "../components/Header";
 import LegendStockListRow from "../components/LegendStockListRow";
@@ -98,7 +98,7 @@ export default function Home({
   const getSearchableStocks = useCallback(() => {
     const valueSymbols = shownValues.map((value) => value.symbol);
     return stocks.filter((stock) => valueSymbols.includes(stock._id));
-  }, [timeframe])
+  }, [shownValues]);
 
   useEffect(() => {
     const matchingEntries = getEntriesInTimeframe();
@@ -115,46 +115,34 @@ export default function Home({
   const sortValues = useCallback(() => {
     return shownValues.sort((value1: Stockvalue, value2: Stockvalue) => {
       if (sortBy === "symbol") {
-        if (!sortDescending) return value1.symbol.localeCompare(value2.symbol);
-        return value2.symbol.localeCompare(value1.symbol);
+        if (sortDescending) return value2.symbol.localeCompare(value1.symbol);
+        return value1.symbol.localeCompare(value2.symbol);
       }
       if (sortBy === "mentions") {
-        if (!sortDescending) return value1.mentions > value2.mentions ? 1 : -1;
-        return value1.mentions < value2.mentions ? 1 : -1;
+        if (sortDescending) return value1.mentions < value2.mentions ? 1 : -1;
+        return value1.mentions > value2.mentions ? 1 : -1;
       }
       if (sortBy === "price") {
-        if (!sortDescending)
-          return parseFloat(value1.price.split("$")[0]) >
-            parseFloat(value2.price.split("$")[0])
-            ? 1
-            : -1;
-        return parseFloat(value2.price.split("$")[0]) >
-          parseFloat(value1.price.split("$")[0])
-          ? 1
-          : -1;
+        const firstPrice = parseFloat(value1.price.split("$")[0]);
+        const secondPrice = parseFloat(value2.price.split("$")[0]);
+        if (sortDescending) return firstPrice < secondPrice ? 1 : -1;
+        return firstPrice > secondPrice ? 1 : -1;
       }
       if (sortBy === "priceChange") {
-        if (!sortDescending)
-          return parseFloat(value1.priceChange) > parseFloat(value2.priceChange)
-            ? 1
-            : -1;
-        return parseFloat(value1.priceChange) < parseFloat(value2.priceChange)
-          ? 1
-          : -1;
+        const firstPriceChange = parseFloat(value1.priceChange);
+        const secondPriceChange = parseFloat(value2.priceChange);
+        if (sortDescending) return firstPriceChange < secondPriceChange ? 1 : -1;
+        return firstPriceChange < secondPriceChange ? 1 : -1;
       }
       if (sortBy === "pricePercentChange") {
+        const firstPricePercentChange = parseFloat(value1.pricePercentChange);
+        const secondPricePercentChange = parseFloat(value2.pricePercentChange);
         if (sortDescending)
-          return parseFloat(value1.pricePercentChange) <
-            parseFloat(value2.pricePercentChange)
-            ? 1
-            : -1;
-        return parseFloat(value1.pricePercentChange) >
-          parseFloat(value2.pricePercentChange)
-          ? 1
-          : -1;
+          return firstPricePercentChange < secondPricePercentChange ? 1 : -1;
+        return firstPricePercentChange > secondPricePercentChange ? 1 : -1;
       }
-      if (!sortDescending) return value1.sentiment > value2.sentiment ? 1 : -1;
-      return value1.sentiment < value2.sentiment ? 1 : -1;
+      if (sortDescending) return value1.sentiment < value2.sentiment ? 1 : -1;
+      return value1.sentiment > value2.sentiment ? 1 : -1;
     });
   }, [sortBy, sortDescending, shownValues]);
 

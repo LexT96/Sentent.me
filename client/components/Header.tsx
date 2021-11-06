@@ -17,17 +17,12 @@ const Header = ({
         id="top"
         className="d-flex flex-column h-100 w-100 position-relative justify-content-center"
       >
-        <Container className="pt-5" style={{ marginBottom: "20vh", zIndex: 2 }}>
-          {/* <h1>Sentent.me</h1> */}
-          <div className="w-75 pt-3 d-flex flex-column justify-content-center">
+        <Container className="pt-5 pt-md-0" style={{ marginBottom: "20vh", zIndex: 2 }}>
+          <div className="w-75  d-flex flex-column justify-content-center">
             <h1 style={{ fontSize: "3.5rem" }}>
               Analyzing reddit stock sentiment
             </h1>
-            <h4>
-              Analyzing the current sentiment of the most popular investing
-              subreddits on a scale from -100 (negative) to 100 (positive)
-            </h4>
-            <div className="d-flex flex-column mt-5 justify-content-between">
+            <div className="d-flex flex-column pt-5 justify-content-between">
               <h3 className="">Enter a stock or scroll down to get started</h3>
               <Searchbar stocks={stocks} setSelectedStock={setSelectedStock} />
             </div>

@@ -1,4 +1,4 @@
-from app.main import app
+from app import app
 
 def test_stock_route():
     tester = app.test_client()

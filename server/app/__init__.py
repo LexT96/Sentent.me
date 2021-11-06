@@ -8,12 +8,12 @@ from datetime import datetime
 app = Flask(__name__, instance_relative_config=True)
 
 # handle routes
-from app import main
+from app.routes import main
 
 # cron settings
 scheduler = APScheduler()
 scheduler.init_app(app)
-scheduler.add_job(id="fetchJob",func=fetchJob, trigger="cron", hour=2)
+scheduler.add_job(id="fetchJob",func=fetchJob, trigger="cron", hour=6)
 scheduler.start()
 
 # apply config

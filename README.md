@@ -7,8 +7,8 @@
     <img src="https://webimages.mongodb.com/_com_assets/cms/MongoDB_Logo_FullColorBlack_RGB-4td3yuxzjs.png?auto=format%2Ccompress" width="140px"/>
 </p>
 
-# PyStonks
-PyStonks analyzes the sentiment of the top posts of the most relevant investing subreddits if they relate to a stock. The backend is built using python and provides a REST-Api built in flask that is served to a ReactJs frontend.
+# Sentent.me
+Sentent.me analyzes the sentiment of the top posts of the most relevant investing subreddits if they relate to a stock. The backend is built using python and provides a REST-Api built in flask that is served to a ReactJs frontend.
 
 ## Workflow
 1. Every 24 hours a cronjob is executed to scrape the titles and scores of all submissions and their comments from the relevant subreddits.

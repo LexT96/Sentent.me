@@ -7,8 +7,8 @@
     <img src="https://webimages.mongodb.com/_com_assets/cms/MongoDB_Logo_FullColorBlack_RGB-4td3yuxzjs.png?auto=format%2Ccompress" width="140px"/>
 </p>
 
-# PyStonks
-PyStonks analyzes the sentiment of the top posts of the most relevant investing subreddits if they relate to a stock. The backend is built using python and provides a REST-Api built in flask that is served to a ReactJs frontend.
+# Sentent.me
+Sentent.me analyzes the sentiment of the top posts of the most relevant investing subreddits if they relate to a stock. The backend is built using python and provides a REST-Api built in flask that is served to a ReactJs frontend.
 
 ## Workflow
 1. Every 24 hours a cronjob is executed to scrape the titles and scores of all submissions and their comments from the relevant subreddits.
@@ -25,21 +25,20 @@ PyStonks analyzes the sentiment of the top posts of the most relevant investing 
 2. Train own machine learning model
 
 ## Getting Started
-1. Make sure you have python 3.9.6+ and pip installed on your machine.
+1. Make sure you have python 3.9.6+, pip and pipenv installed on your machine.
 2. Clone this repository.
 ``` 
 git clone https://github.com/LexT96/pyStonks
 ```
 3. Navigate to your local version of this repo and create a virtual environment.
 ```
-cd pystonks && python3 -m venv venv
+cd pystonks && pipenv install
 ```
-4. Start your virtual environment and install the dependencies found in the requirements.txt
+4. Start your virtual environment.
 ```
-source venv/bin/activate
-pip install -r requirements.txt 
+pipenv shell
 ```
-5. Run the tests
+5. Run the tests.
 ```
 pytest -s
 ```

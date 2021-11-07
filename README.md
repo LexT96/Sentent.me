@@ -25,21 +25,20 @@ Sentent.me analyzes the sentiment of the top posts of the most relevant investin
 2. Train own machine learning model
 
 ## Getting Started
-1. Make sure you have python 3.9.6+ and pip installed on your machine.
+1. Make sure you have python 3.9.6+, pip and pipenv installed on your machine.
 2. Clone this repository.
 ``` 
 git clone https://github.com/LexT96/pyStonks
 ```
 3. Navigate to your local version of this repo and create a virtual environment.
 ```
-cd pystonks && python3 -m venv venv
+cd pystonks && pipenv install
 ```
-4. Start your virtual environment and install the dependencies found in the requirements.txt
+4. Start your virtual environment.
 ```
-source venv/bin/activate
-pip install -r requirements.txt 
+pipenv shell
 ```
-5. Run the tests
+5. Run the tests.
 ```
 pytest -s
 ```

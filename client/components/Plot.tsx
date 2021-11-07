@@ -45,7 +45,7 @@ const Plot = ({
     let maxChange = 0;
     mappedEntries.forEach((entry) => {
       const priceChange = Math.abs(parseFloat(entry.value.pricePercentChange.split("%")[0]));
-      if (priceChange > maxChange) maxChange = entry. value.pricePercentChange;
+      if (priceChange > maxChange) maxChange = priceChange;
     });
     setMaxPriceChange(maxChange);
     return maxChange;
@@ -87,7 +87,6 @@ const Plot = ({
     prepareEntriesForDisplay();
   }, [mappedEntries, symbol]);
 
-
   return (
     <FlexibleWidthXYPlot
       style={{ opacity, transition: "opacity 1s" }}
@@ -105,7 +104,7 @@ const Plot = ({
         stroke={"#6930c3"}
         data={priceEntries}
       />
-      <XAxis style={{fontSize: "0.6rem"}} />
+      <XAxis style={{fontSize: "0.6rem"}}  />
       {value && <Hint value={value} />}
       <YAxis tickFormat={(v) => `${calculateTickFormat(v)}%`} title="Pricechange" />
       <YAxis orientation="right" title="Sentiment" />

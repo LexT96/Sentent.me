@@ -1,5 +1,5 @@
 import pymongo
-from datetime import datetime, timedelta
+from datetime import datetime
 import os
 
 def __setup():

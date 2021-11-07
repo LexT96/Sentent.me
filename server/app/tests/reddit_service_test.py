@@ -1,8 +1,5 @@
 from app.services.reddit_service import fetch_posts, map_titles_to_stocks, group_posts_by_stock
 from app.Post import Post
-def test_post_fetching():
-    posts = fetch_posts()
-    assert len(posts) > 100
 
 def test_stock_mapping():
     posts = [

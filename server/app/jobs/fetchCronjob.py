@@ -1,3 +1,4 @@
+from app import app
 from app.services.stock_api_service import fetch_tickers, fetch_stock_information
 from app.services.db_service import get_all_stocks, insert_stock, insert_entry
 from app.services.reddit_service import get_posts, group_posts_by_stock

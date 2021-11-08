@@ -1,10 +1,8 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Container, Table } from "react-bootstrap";
 import Header from "../components/Header";
 import LegendStockListRow from "../components/LegendStockListRow";
-import Navbar from "../components/Navbar";
 import StockList from "../components/StockList";
-import Searchbar from "../components/Searchbar";
 import Timeframeselector from "../components/TimeframeSelector";
 
 export default function Home({
@@ -194,6 +192,7 @@ export async function getStaticProps() {
   const yesterdaysValues = yesterdaysEntry.values;
   return {
     props: { yesterdaysValues, entries, stocks },
+    revalidate: 14400
   };
 }
 

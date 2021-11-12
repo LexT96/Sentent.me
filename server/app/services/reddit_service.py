@@ -8,14 +8,26 @@ from collections import defaultdict
 def fetch_posts():
     api = PushshiftAPI()
     posts = []
-    two_days_ago = int((datetime.now() - timedelta(2)).replace(hour=18, minute=0, second=0, microsecond=0).timestamp())
-    yesterday = int((datetime.now() - timedelta(1)).replace(hour=18, minute=0, second=0, microsecond=0).timestamp())
-    generator = api.search_submissions(after=two_days_ago, before=yesterday, 
-                                subreddit="wallstreetbets,investing,stocks,wallstreetbetselite,wallstreetbetsnew",
-                                filter=['title','score','created_utc','subreddit'],
-                                )
-    for submission in generator:
-        posts.append(Post(submission.title,submission.score,submission.subreddit,submission.created_utc,None,None))
+    subredditNames = ["wallstreetbets", "investing", "stocks", "wallstreetbetselite", "wallstreetbetsnew", "mauerstrassenwetten"]
+    for subredditName in subredditNames:
+        subreddit = reddit.subreddit(subredditName)
+        for submission in subreddit.new(limit=1000):
+            utcPostTime = submission.created
+            submissionDate = datetime.utcfromtimestamp(utcPostTime)
+            currentTime = datetime.utcnow()
+
+            submissionDelta = currentTime - submissionDate
+
+            submissionDelta = str(submissionDelta)
+            if 'day' not in submissionDelta:
+                posts.append(Post(submission.title,submission.score,submission.subreddit,submission.created_utc,None,None))
+                submission.comments.replace_more(limit=5)
+                for comment in submission.comments:
+                    commentTitle = comment.body
+                    commentScore = comment.score
+                    commentSub = comment.subreddit
+                    commentUTC = comment.created_utc
+                    posts.append(Post(commentTitle, commentScore, commentSub, commentUTC, None, None))
     return posts
 
 def __setup_stanza():

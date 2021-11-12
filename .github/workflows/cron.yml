@@ -5,6 +5,10 @@ on:
   schedule:
     - cron: "0 3 * * *"
 
+defaults:
+  run:
+    working-directory: ./server
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -23,4 +27,6 @@ jobs:
           pipenv install
       - name: run cronjob
         run: |
-          pipenv run python3 ./server/app/jobs/fetchCronjob.py
+          pipenv shell
+          flask run
+          python3 ./app/jobs/fetchCronjob.py

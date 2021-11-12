@@ -16,6 +16,6 @@ def calculate_average_sentiment(posts):
     sentiment_sum = 0
     for post in posts:
         sentiment_sum += post.sentiment
-    average = sentiment_sum/len(posts)
+    average = round(sentiment_sum/len(posts),2)
     return average
 

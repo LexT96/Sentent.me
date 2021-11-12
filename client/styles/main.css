@@ -6,8 +6,21 @@ h1, h2, h3, h4, h5, h6, p, span, a {
   font-family: "RobotoSlab";
 }
 
+h4 {
+  margin: 0.5rem 0.25rem 0.5rem 0.25rem !important;
+}
+
+.icon {
+  opacity: 0.8;
+  transition: opacity 0.3s;
+}
+.icon:hover {
+  opacity: 1;
+}
+
 #top {
-  min-height: 85vh;
+  min-height: 88vh;
+  color: white;
   background: linear-gradient(to left top, #5e60ce 0%, #6930c3 50%, #7400b8 100%), linear-gradient(black, black);
 }
 
@@ -55,12 +68,6 @@ button:focus {
   border: 1px solid rgba(255, 255, 255, 0.18);
 }
 
-a {
-  text-decoration: none !important;
-  text-decoration: none !important;
-  color: black !important;
-}
-
 .selected {
   background-color: rgba(105, 48, 195, 0.2);
 }
@@ -85,31 +92,28 @@ a {
     border-color: transparent;
   }
 }
-.legend-button {
-  padding: 0 !important;
-  background-color: #FFF !important;
-  color: #000 !important;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-repeat: no-repeat !important;
-  border: none !important;
-  cursor: pointer !important;
-  overflow: hidden !important;
-  outline: none !important;
+tr.stock-table-header th {
+  width: 15%;
+  cursor: pointer;
+}
+
+tr.stock-table-header th.long {
+  width: 20%;
 }
 
 .glass-card {
   box-shadow: 0 0 8px 0 rgba(31, 38, 135, 0.37);
   border-radius: 10px;
-  min-width: 100%;
-  overflow-x: auto;
-  overflow-y: hidden;
-  flex-wrap: nowrap !important;
+}
+@media (max-width: 767px) {
+  .glass-card {
+    border-radius: 0px;
+    box-shadow: 0 0 0 0 rgba(31, 38, 135, 0.37);
+  }
 }
 
 #navbar {
-  z-index: 999;
+  z-index: 2000;
   position: fixed;
   top: 0;
   left: 0;

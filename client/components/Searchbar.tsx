@@ -7,19 +7,26 @@ const Searchbar = ({
   setSelectedStock,
 }: {
   stocks: Stock[];
-  setSelectedStock: Dispatch<SetStateAction<Stock | null>>;
+  setSelectedStock: Dispatch<SetStateAction<string>>;
 }) => {
+
   const handleChange = (matchingStocks: Stock[]) => {
-    setSelectedStock(matchingStocks[0]);
+    const symbol = matchingStocks[0]?._id;
+    if (!symbol) return;
+    setSelectedStock(symbol);
+    const symbolElement = document.getElementById(symbol);
+    if (!symbolElement) return;
+    symbolElement.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
-    <Form.Group className="w-100">
+    <Form.Group>
       <Typeahead
         id="basic-typeahead-single"
-        labelKey={(stock: Stock) => `${stock._id} (${stock.name})`}
+        labelKey={(stock: any) => `$${stock._id} (${stock.companyName})`}
         onChange={handleChange}
         options={stocks}
+        onKeyDown={() => setSelectedStock("")}
         placeholder="Enter a stock..."
       />
     </Form.Group>

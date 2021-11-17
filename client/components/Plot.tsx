@@ -36,9 +36,9 @@ const Plot = ({
   }
 
   const calculatePriceDivider = (maxChange: number) => {
-    if (maxChange > 100) return 100;
-    if (maxChange > 25) return maxChange;
-    return maxChange / 4;
+    if (maxChange > 100) return 0.5;
+    if (maxChange > 25) return 1;
+    return 4;
   }
 
   const calculateMaxRelativePriceChange = () => {
@@ -61,7 +61,7 @@ const Plot = ({
       const priceDivider = calculatePriceDivider(maxChange);
       const sentiment = Math.round(entryValue.sentiment * 100);
       const dateSplit = entry._id.split(".");
-      const date = dateSplit[0] + "." + dateSplit[1];
+      const date = dateSplit[0] + "." + dateSplit[1][1];
       const priceChange = parseFloat(
         entryValue.pricePercentChange.split("%")[0]
       );
@@ -104,7 +104,7 @@ const Plot = ({
         stroke={"#6930c3"}
         data={priceEntries}
       />
-      <XAxis style={{fontSize: "0.6rem"}}  />
+      <XAxis style={{fontSize: "0.5rem"}}  />
       {value && <Hint value={value} />}
       <YAxis tickFormat={(v) => `${calculateTickFormat(v)}%`} title="Pricechange" />
       <YAxis orientation="right" title="Sentiment" />

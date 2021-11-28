@@ -2,6 +2,7 @@ $primary-dark: #7400b8;
 $primary: #6930c3;
 $primary-light: #5e60ce;
 $accent: #80ffdb;
+$background-dark: #060507;
 
 @font-face {
   font-family: "RobotoSlab";
@@ -10,6 +11,14 @@ $accent: #80ffdb;
 
 h1,h2,h3,h4,h5,h6,p,span,a {
   font-family: "RobotoSlab";
+}
+
+#illustration {
+  min-height: 400px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url("/assets/Illustration.png");
+  background-position: center;
 }
 
 h4 {

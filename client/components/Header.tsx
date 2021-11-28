@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction } from "react";
-import {Container } from "react-bootstrap";
+import {Col, Container, Row } from "react-bootstrap";
 import Navbar from "./Navbar";
 import Searchbar from "./Searchbar";
 
@@ -17,16 +17,30 @@ const Header = ({
         id="top"
         className="d-flex flex-column h-100 w-100 position-relative justify-content-center"
       >
-        <Container className="pt-5 pt-md-0" style={{ marginBottom: "20vh", zIndex: 2 }}>
-          <div className="w-75  d-flex flex-column justify-content-center">
-            <h1 style={{ fontSize: "3.5rem" }}>
-              Analyzing reddit stock sentiment
-            </h1>
-            <div className="d-flex flex-column pt-5 justify-content-between">
-              <h3 className="">Enter a stock or scroll down to get started</h3>
-              <Searchbar stocks={stocks} setSelectedStock={setSelectedStock} />
-            </div>
-          </div>
+        <Container
+          className="pt-5 pt-lg-0"
+        >
+          <Row className="h-100">
+            <Col xs={12} lg={6}>
+              <div className="d-flex flex-column justify-content-center">
+                <h1 style={{ fontSize: "3.5rem" }}>
+                  Analyzing reddit stock sentiment
+                </h1>
+                <div className="d-flex flex-column pt-4 justify-content-between">
+                  <h3 className="">
+                    Enter a stock or scroll down to get started
+                  </h3>
+                  <Searchbar
+                    stocks={stocks}
+                    setSelectedStock={setSelectedStock}
+                  />  
+                </div>
+              </div>
+            </Col>
+            <Col xs={12} lg={6}>
+              <div id="illustration" className="mt-lg-0 mt-5 d-none d-lg-block"/>
+            </Col>
+          </Row>
         </Container>
         <div
           className="d-flex align-items-end position-absolute bottom-0"

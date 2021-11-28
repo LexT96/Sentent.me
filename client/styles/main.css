@@ -6,6 +6,14 @@ h1, h2, h3, h4, h5, h6, p, span, a {
   font-family: "RobotoSlab";
 }
 
+#illustration {
+  min-height: 400px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url("/assets/Illustration.png");
+  background-position: center;
+}
+
 h4 {
   margin: 0.5rem 0.25rem 0.5rem 0.25rem !important;
 }

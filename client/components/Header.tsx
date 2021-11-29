@@ -18,7 +18,7 @@ const Header = ({
         className="d-flex flex-column h-100 w-100 position-relative justify-content-center"
       >
         <Container
-          className="pt-5 pt-lg-0"
+          className="pt-5 pt-lg-0" style={{zIndex: 2}}
         >
           <Row className="h-100">
             <Col xs={12} lg={6}>

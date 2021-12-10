@@ -27,7 +27,7 @@ def fetch_posts():
             submissionDelta = str(submissionDelta)
             if 'day' not in submissionDelta:
                 posts.append(Post(submission.title,submission.score,submission.subreddit,submission.created_utc,None,None))
-                submission.comments.replace_more(limit=5)
+                submission.comments.replace_more(limit=20)
                 for comment in submission.comments:
                     commentTitle = comment.body
                     commentScore = comment.score

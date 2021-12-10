@@ -20,7 +20,6 @@ const StockListRow = ({
   }
   return (
     <tr
-      className="glass-card"
       id={values.symbol}
       style={{ cursor: "pointer" }}
       onClick={onRowClick}
@@ -35,12 +34,12 @@ const StockListRow = ({
         <h4>{values.price}</h4>
       </td>
       <td>
-        <h4 style={{ color: priceChange < 0.0 ? "#F00" : "#000" }}>
+        <h4 style={{ color: priceChange < 0.0 ? "#F00" : "#FFF" }}>
           {priceChange}$
         </h4>
       </td>
       <td>
-        <h4 style={{ color: priceChange < 0 ? "#F00" : "#000" }}>
+        <h4 style={{ color: priceChange < 0 ? "#F00" : "#FFF" }}>
           {values.pricePercentChange}
         </h4>
       </td>
@@ -48,7 +47,7 @@ const StockListRow = ({
         <h4
           style={{
             color:
-              sentiment >= 50 ? "#0E0" : sentiment <= -50 ? "#F00" : "#000",
+              sentiment >= 50 ? "#0E0" : sentiment <= -50 ? "#F00" : "#FFF",
           }}
         >
           {sentiment}

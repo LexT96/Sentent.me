@@ -1,0 +1,10 @@
+@import "../../styles/_variables.scss";
+
+.navbar {
+    background-color: $primary-dark;
+    opacity: 0.97;
+}
+
+.navbar--hidden {
+    background-color: rgba(0, 0, 0, 0);
+}

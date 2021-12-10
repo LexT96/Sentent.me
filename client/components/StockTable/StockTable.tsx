@@ -1,10 +1,8 @@
 import React, { Dispatch, SetStateAction } from "react";
-import StockListRow from "./StockListRow";
-import Stock from "./Stock";
-import { Table } from "react-bootstrap";
-import LegendStockListRow from "./LegendStockListRow";
+import StockRow from "../StockRow/StockRow";
+import Stock from "../Stock";
 
-const StockList = ({
+const StockTable = ({
   stockValues,
   selectedStock,
   setSelectedStock,
@@ -18,11 +16,11 @@ const StockList = ({
   stocks: Stock[];
 }) => {
   return (
-    <>
-        {stockValues.map((values: Stockvalue) => (
+<>
+        {stockValues.map((values: Stockvalue, index: number) => (
           <>
-            <StockListRow
-              key={values.symbol}
+            <StockRow
+              key={index}
               values={values}
               selectedStock={selectedStock}
               setSelectedStock={setSelectedStock}
@@ -57,4 +55,4 @@ const StockList = ({
   );
 };
 
-export default StockList;
+export default StockTable;

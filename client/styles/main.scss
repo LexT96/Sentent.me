@@ -1,8 +1,4 @@
-$primary-dark: #7400b8;
-$primary: #6930c3;
-$primary-light: #5e60ce;
-$accent: #80ffdb;
-$background-dark: #060507;
+@import "./_variables.scss";
 
 @font-face {
   font-family: "RobotoSlab";
@@ -11,6 +7,64 @@ $background-dark: #060507;
 
 h1,h2,h3,h4,h5,h6,p,span,a {
   font-family: "RobotoSlab";
+  color: white;
+}
+
+body {
+  background: black !important;
+}
+
+table {
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  background-color: $background-dark;
+}
+
+tr td:first-child {
+  border-left: $table-border;
+}
+
+tr td:last-child {
+  border-right: $table-border;
+}
+
+th {
+  border-top: $table-border;
+  border-bottom: $table-border;
+}
+
+th:first-child {
+  border-left: $table-border;
+  border-top-left-radius: 10px;
+}
+
+th:last-child {
+  border-right: $table-border;
+  border-top-right-radius: 10px;
+}
+
+td {
+  text-align: right;
+}
+
+tr:last-child td:first-child {
+  border-bottom-left-radius: 10px;
+}
+
+tr:last-child td {
+  border-bottom: $table-border;
+}
+
+tr:last-child td:last-child {
+  border-bottom-right-radius: 10px;
+}
+
+.primary-text {
+  color: $primary !important;
+}
+
+canvas {
+  position: absolute !important;
 }
 
 #illustration {
@@ -33,51 +87,9 @@ h4 {
   transition: opacity 0.3s;
 }
 
-#top {
-  min-height: 88vh;
-  color: white;
-  background:
-        linear-gradient(to left top, $primary-light 0%, $primary 50%, $primary-dark 100% ),
-        linear-gradient(rgba(0, 0, 0, 1), rgba(0, 0, 0, 1));
-}
-
-.button {
-  color: $primary !important;
-  border-color: $primary !important;
-  background-color: white !important;
-  &:hover {
-    color: white !important;
-    background-color: $primary !important;
-  }
-  &--active {
-    color: white !important;
-    background-color: $primary !important;
-  }
-}
-
 .horizontal-scrollable {
     overflow-x: auto;
 }
-
-button:focus {
-  outline: none !important;
-  box-shadow: none !important;
-}
-
-.navbar {
-  background-color: $primary;
-
-}
-
-.navbar--hidden {
-    background-color: rgba(0,0,0,0);
-}
-
-.active-timeframe {
-  $background-color: $primary-light !important;
-}
-
-
 
 .stock {
     background: rgba( 33, 150, 243, 0.05 );

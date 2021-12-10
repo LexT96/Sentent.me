@@ -8,7 +8,6 @@ app = Flask(__name__, instance_relative_config=True)
 
 # handle routes
 from app.routes import main
-from app.jobs import fetchCronjob
 
 # cron settings
 # scheduler = APScheduler()

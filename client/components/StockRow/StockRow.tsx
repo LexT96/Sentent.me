@@ -9,8 +9,11 @@ const StockListRow = ({
   selectedStock: string | null;
   setSelectedStock: Dispatch<SetStateAction<string>>;
 }) => {
+
   const sentiment = Math.round(values.sentiment * 100);
   const priceChange = parseFloat(values.priceChange);
+
+  // show detailed informations on selected stock or hide it again
   const onRowClick = () => {
     if (values.symbol === selectedStock) {
       setSelectedStock("");
@@ -18,10 +21,11 @@ const StockListRow = ({
     }
     setSelectedStock(values.symbol);
   }
+
   return (
     <tr
       id={values.symbol}
-      style={{ cursor: "pointer" }}
+      className="cursor-pointer"
       onClick={onRowClick}
     >
       <td>

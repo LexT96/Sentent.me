@@ -10,7 +10,7 @@ export const config = {
       "polygon": { "nb_sides": 8 }
     },
     "opacity": {
-      "value": 0.2209648271344806,
+      "value": 0.1,
       "random": true,
       "anim": { "enable": false, "speed": 1, "opacity_min": 0.1, "sync": false }
     },
@@ -23,7 +23,7 @@ export const config = {
       "enable": true,
       "distance": 150,
       "color": "#ffffff",
-      "opacity": 0.4,
+      "opacity": 0.3,
       "width": 1
     },
     "move": {

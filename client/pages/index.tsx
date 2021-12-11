@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Container, Table } from "react-bootstrap";
 import Header from "../components/Hero/Hero";
-import LegendStockListRow from "../components/LegendStockListRow";
+import LegendStockListRow from "../components/LegendStockRow/LegendStockRow";
 import StockTable from "../components/StockTable/StockTable";
 import Timeframeselector from "../components/TimeframeSelector/TimeframeSelector";
 
@@ -19,18 +19,8 @@ export default function Home({
   const [selectedStock, setSelectedStock] = useState<string>("");
   const [shownValues, setShownValues] = useState(yesterdaysValues);
   const [timeframe, setTimeframe] = useState("D");
-  const [width, setWidth] = useState(0);
 
-  const handleResize = () => {
-    setWidth(window.innerWidth);
-  }
-
-  useEffect(() => {
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, [])
-
+  // slice the entries to match the selected timeframe
   const getEntriesInTimeframe = () => {
     if (timeframe === "D") return entries.slice(entries.length-1);
     if (timeframe === "W") {
@@ -41,6 +31,7 @@ export default function Home({
     return entries.slice(entries.length - 30);
   };
 
+  //TODO: Remove
   const groupStockValuesByStock = (stockValues: Stockvalue[]) => {
     let groups: StockvalueGroup[] = [];
     for (let i = 0; i < stockValues.length; i++) {
@@ -65,6 +56,7 @@ export default function Home({
     return groups;
   };
 
+  // TODO: Remove
   const summarizeStockValueGroup = (stockValueGroup: StockvalueGroup) => {
     const averageSentiment =
       Math.round(
@@ -93,6 +85,7 @@ export default function Home({
     };
   };
 
+  //TODO: Remove
   const getSearchableStocks = useCallback(() => {
     const valueSymbols = shownValues.map((value) => value.symbol);
     return stocks.filter((stock) => valueSymbols.includes(stock._id));
@@ -110,6 +103,7 @@ export default function Home({
     setShownValues(mappedGroups);
   }, [timeframe]);
 
+  //TODO: cleanup?
   const sortValues = useCallback(() => {
     return shownValues.sort((value1: Stockvalue, value2: Stockvalue) => {
       if (sortBy === "symbol") {
@@ -145,7 +139,7 @@ export default function Home({
   }, [sortBy, sortDescending, shownValues]);
 
   return (
-    <div className="">
+    <div>
       <Header setSelectedStock={setSelectedStock} stocks={getSearchableStocks()}/>
       <Container className="mt-5 mb-5">
         <div className="d-flex justify-content-between align-items-center mb-4">
@@ -156,24 +150,18 @@ export default function Home({
           />
         </div>
         <Table responsive="md" borderless>
-          <thead>
-            <LegendStockListRow
-              sortBy={sortBy}
-              setSortBy={setSortBy}
-              sortDescending={sortDescending}
-              setSortDescending={setSortDescending}
-              sortValues={sortValues}
-            />
-          </thead>
-          <tbody>
             <StockTable
               stockValues={sortValues()}
               selectedStock={selectedStock}
               setSelectedStock={setSelectedStock}
               entries={entries}
               stocks={stocks}
+              sortBy={sortBy}
+              setSortBy={setSortBy}
+              sortDescending={sortDescending}
+              setSortDescending={setSortDescending}
+              sortValues={sortValues}
             />
-          </tbody>
         </Table>
       </Container>
     </div>
@@ -190,6 +178,7 @@ export async function getStaticProps() {
 );
   const yesterdaysEntry = entries[entries.length - 1];
   const yesterdaysValues = yesterdaysEntry.values;
+  //TODO: Remove validation
   return {
     props: { yesterdaysValues, entries, stocks },
     revalidate: 14400

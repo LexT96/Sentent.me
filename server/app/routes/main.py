@@ -24,6 +24,8 @@ def handleGet():
     entry = create_entry(stocks)
     return entry
 
+
+#TODO: move
 def create_entry(stock_data):
     posts = get_posts()
     stocks = get_all_stocks()

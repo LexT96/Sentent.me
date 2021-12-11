@@ -1,8 +1,7 @@
 from psaw import PushshiftAPI
 from datetime import datetime, timedelta
 import stanza
-from app.Post import Post
-from app.services.db_service import get_all_stocks
+from app.models.Post import Post
 from collections import defaultdict
 import praw
 import os

@@ -1,6 +1,6 @@
 import "../styles/main.scss";
 import type { AppProps } from "next/app";
-import React from "react";
+import React, { useState } from "react";
 import Head from "next/head";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../node_modules/react-vis/dist/style.css";
@@ -9,7 +9,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
-        <title>Sentent.me - Reddit sentiment analyzer</title>
+        <title>Reddit sentiment analyzer</title>
         <meta
           property="og:title"
           content="Sentent.me - Reddit sentiment analyzer"
@@ -55,6 +55,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         />
       </Head>
       <Component {...pageProps} />
+
     </>
   );
 }

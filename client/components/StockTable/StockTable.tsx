@@ -1,6 +1,8 @@
-import React, { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import StockRow from "../StockRow/StockRow";
-import Stock from "../Stock";
+import Stock from "../Stock/Stock";
+import StockTableBody from "../StockTableBody/StockTableBody";
+import LegendStockListRow from "../LegendStockRow/LegendStockRow";
 
 const StockTable = ({
   stockValues,
@@ -8,50 +10,54 @@ const StockTable = ({
   setSelectedStock,
   entries,
   stocks,
+  sortBy,
+  setSortBy,
+  sortDescending,
+  setSortDescending,
+  sortValues,
 }: {
   stockValues: Stockvalue[];
   selectedStock: string | null;
   setSelectedStock: Dispatch<SetStateAction<string>>;
   entries: Entry[];
   stocks: Stock[];
+  sortBy: keyof Stockvalue;
+  setSortBy: Dispatch<SetStateAction<keyof Stockvalue>>;
+  sortDescending: boolean;
+  setSortDescending: Dispatch<SetStateAction<boolean>>;
+  sortValues: () => void;
 }) => {
+  const [displayedStockValues, setDisplayedStockValues] = useState(stockValues);
+  const [displayedStockRange, setDisplayedStockRange] = useState([0, 100]);
+
+  const paginateDisplayedStockValues = () => {
+    const start = displayedStockRange[0];
+    const end = displayedStockRange[1];
+    const newDisplayedStockValues = stockValues.slice(start, end);
+    setDisplayedStockValues(newDisplayedStockValues);
+  };
+
+  useEffect(() => {
+    paginateDisplayedStockValues();
+  }, []);
+
   return (
-<>
-        {stockValues.map((values: Stockvalue, index: number) => (
-          <>
-            <StockRow
-              key={index}
-              values={values}
-              selectedStock={selectedStock}
-              setSelectedStock={setSelectedStock}
-            />
-            {selectedStock === values.symbol && (
-              <tr>
-                <td colSpan={6} className="px-3">
-                <Stock
-                  stock={stocks.find((s: Stock) => s._id === selectedStock) ?? stocks[0]}
-                  mappedEntries={entries
-                    .filter((entry: Entry) => {
-                      const mappedEntries = entry.values.map(
-                        (value: any) => value.symbol
-                      );
-                      return mappedEntries.includes(selectedStock);
-                    })
-                    .map((entry: Entry) => {
-                      return {
-                        _id: entry._id,
-                        value: entry.values.filter(
-                          (value: any) => value.symbol === selectedStock
-                        )[0],
-                      };
-                    })}
-                />
-                </td>
-              </tr>
-            )}
-          </>
-        ))}
-        </>
+    <>
+        <LegendStockListRow
+          sortBy={sortBy}
+          setSortBy={setSortBy}
+          sortDescending={sortDescending}
+          setSortDescending={setSortDescending}
+          sortValues={sortValues}
+        />
+      <StockTableBody
+        stockValues={stockValues}
+        selectedStock={selectedStock}
+        setSelectedStock={setSelectedStock}
+        entries={entries}
+        stocks={stocks}
+      />
+    </>
   );
 };
 

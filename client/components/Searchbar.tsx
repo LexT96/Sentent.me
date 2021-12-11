@@ -10,6 +10,7 @@ const Searchbar = ({
   setSelectedStock: Dispatch<SetStateAction<string>>;
 }) => {
 
+
   const handleChange = (matchingStocks: Stock[]) => {
     const symbol = matchingStocks[0]?._id;
     if (!symbol) return;
@@ -22,7 +23,6 @@ const Searchbar = ({
   return (
     <Form.Group>
       <Typeahead
-        id="basic-typeahead-single"
         labelKey={(stock: any) => `$${stock._id} (${stock.companyName})`}
         onChange={handleChange}
         options={stocks}

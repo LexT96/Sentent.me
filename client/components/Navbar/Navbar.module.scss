@@ -1,8 +1,7 @@
 @import "../../styles/_variables.scss";
 
 .navbar {
-    background-color: $primary-dark;
-    opacity: 0.97;
+    background-color: rgba(0,0,0,0.8);
 }
 
 .navbar--hidden {

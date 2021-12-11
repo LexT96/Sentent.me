@@ -1,6 +1,6 @@
 {
   "particles": {
-    "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
+    "number": { "value": 70, "density": { "enable": true, "value_area": 800 } },
     "color": { "value": "#ffffff" },
     "shape": {
       "type": "circle",
@@ -52,7 +52,7 @@
       },
       "repulse": { "distance": 200, "duration": 0.4 },
       "push": { "particles_nb": 4 },
-      "remove": { "particles_nb": 2 }
+      "remove": { "particles_nb": 4 }
     }
   },
   "retina_detect": true

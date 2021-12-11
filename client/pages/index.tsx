@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Container, Table } from "react-bootstrap";
-import Header from "../components/Header";
+import Header from "../components/Hero/Hero";
 import LegendStockListRow from "../components/LegendStockListRow";
-import StockList from "../components/StockList";
-import Timeframeselector from "../components/TimeframeSelector";
+import StockTable from "../components/StockTable/StockTable";
+import Timeframeselector from "../components/TimeframeSelector/TimeframeSelector";
 
 export default function Home({
   yesterdaysValues,
@@ -130,7 +130,7 @@ export default function Home({
         const firstPriceChange = parseFloat(value1.priceChange);
         const secondPriceChange = parseFloat(value2.priceChange);
         if (sortDescending) return firstPriceChange < secondPriceChange ? 1 : -1;
-        return firstPriceChange < secondPriceChange ? 1 : -1;
+        return firstPriceChange < secondPriceChange ? -1 : 1;
       }
       if (sortBy === "pricePercentChange") {
         const firstPricePercentChange = parseFloat(value1.pricePercentChange);
@@ -145,17 +145,17 @@ export default function Home({
   }, [sortBy, sortDescending, shownValues]);
 
   return (
-    <div>
+    <div className="">
       <Header setSelectedStock={setSelectedStock} stocks={getSearchableStocks()}/>
       <Container className="mt-5 mb-5">
-        <div className="d-flex justify-content-between align-items-center mb-3">
+        <div className="d-flex justify-content-between align-items-center mb-4">
           <span>{shownValues.length} Stocks</span>
           <Timeframeselector
             timeframe={timeframe}
             setTimeframe={setTimeframe}
           />
         </div>
-        <Table responsive="md" bordered={width < 768}>
+        <Table responsive="md" borderless>
           <thead>
             <LegendStockListRow
               sortBy={sortBy}
@@ -166,7 +166,7 @@ export default function Home({
             />
           </thead>
           <tbody>
-            <StockList
+            <StockTable
               stockValues={sortValues()}
               selectedStock={selectedStock}
               setSelectedStock={setSelectedStock}

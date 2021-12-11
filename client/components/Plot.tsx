@@ -11,6 +11,11 @@ import {
   YAxis,
 } from "react-vis";
 
+const GRID_LINES = {
+  stroke: "#ccc",
+  opacity: 0.1
+};
+
 const Plot = ({
   mappedEntries,
   symbol,
@@ -91,14 +96,14 @@ const Plot = ({
     <FlexibleWidthXYPlot
       style={{ opacity, transition: "opacity 1s" }}
       onMouseLeave={() => setValue(null)}
-      height={400}
+      height={500}
       yDomain={[-105, 105]}
       margin={{ bottom: 100, left: 50, right: 50 }}
       xType={"ordinal"}
     >
-      <HorizontalGridLines style={{ stroke: "#ccc"}} />
-      <VerticalGridLines style={{ stroke: "#ccc", }} />
-      <VerticalBarSeries fill={"#64dfdf"} barWidth={0.2} data={sentimentEntries} />
+      <HorizontalGridLines style={GRID_LINES} />
+      <VerticalGridLines style={GRID_LINES} />
+      <VerticalBarSeries fill={"#64dfdf"} barWidth={0.3} data={sentimentEntries} />
       <LineSeries
         onNearestXY={(value) => setValue(value)}
         stroke={"#6930c3"}

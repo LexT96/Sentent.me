@@ -25,33 +25,34 @@ const StockListRow = ({
       onClick={onRowClick}
     >
       <td>
-        <h4>${values.symbol}</h4>
+        <h5>${values.symbol}</h5>
       </td>
       <td>
-        <h4>{values.mentions}</h4>
+        <h5>{values.mentions}</h5>
       </td>
       <td>
-        <h4>{values.price}</h4>
+        <h5>{values.price}</h5>
       </td>
       <td>
-        <h4 style={{ color: priceChange < 0.0 ? "#F00" : "#FFF" }}>
+        <h5 style={{ color: priceChange < 0.0 ? "#F00" : "#FFF" }}>
           {priceChange}$
-        </h4>
+        </h5>
       </td>
       <td>
-        <h4 style={{ color: priceChange < 0 ? "#F00" : "#FFF" }}>
+        <h5 style={{ color: priceChange < 0 ? "#F00" : "#FFF" }}>
           {values.pricePercentChange}
-        </h4>
+        </h5>
       </td>
       <td>
-        <h4
+        <h5
+        className="pe-2"
           style={{
             color:
               sentiment >= 50 ? "#0E0" : sentiment <= -50 ? "#F00" : "#FFF",
           }}
         >
           {sentiment}
-        </h4>
+        </h5>
       </td>
     </tr>
   );

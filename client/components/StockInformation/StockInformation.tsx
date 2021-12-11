@@ -6,7 +6,7 @@ const StockInformation = ({ stock }: { stock: Stock }) => {
     <Row className="p-3">
       <Col md={4} lg={3}>
         <ListGroup className="h-100">
-          <ListGroup.Item className="h-100">
+          <ListGroup.Item>
             <div className="d-flex flex-column align-items-md-center pb-5 pt-2 h-100">
               <h4 className="text-md-center">{stock.companyName}</h4>
               {stock.image && (
@@ -28,8 +28,8 @@ const StockInformation = ({ stock }: { stock: Stock }) => {
               as="li"
               className="d-flex justify-content-between align-items-start"
             >
-              <div className="ms-2 me-auto">
-                <div className="fw-bold ">Website</div>
+              <div className="ms-2 w-100 me-auto">
+                <div className="fw-bold text-left">Website</div>
                 <a className="link-primary" href={stock.website}>
                   {stock.website}
                 </a>
@@ -41,7 +41,7 @@ const StockInformation = ({ stock }: { stock: Stock }) => {
               as="li"
               className="d-flex justify-content-between align-items-start"
             >
-              <div className="ms-2 me-auto">
+              <div className="ms-2 w-100 me-auto">
                 <div className="fw-bold">Sector</div>
                 {stock.sector}
               </div>
@@ -52,7 +52,7 @@ const StockInformation = ({ stock }: { stock: Stock }) => {
               as="li"
               className="d-flex justify-content-between align-items-start"
             >
-              <div className="ms-2 me-auto">
+              <div className="ms-2 w-100 me-auto">
                 <div className="fw-bold">Industry</div>
                 {stock.industry}
               </div>
@@ -63,7 +63,7 @@ const StockInformation = ({ stock }: { stock: Stock }) => {
               as="li"
               className="d-flex justify-content-between align-items-start"
             >
-              <div className="ms-2 me-auto">
+              <div className="ms-2 w-100 me-auto">
                 <div className="fw-bold">Description</div>
                 {stock.description}
               </div>

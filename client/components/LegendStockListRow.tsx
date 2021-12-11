@@ -13,6 +13,7 @@ const LegendStockListRow = ({
   setSortDescending: Dispatch<SetStateAction<boolean>>;
   sortValues: () => void;
 }) => {
+
   const handleSortClick = useCallback(
     (value: keyof Stockvalue) => {
       if (value === sortBy) {
@@ -27,7 +28,7 @@ const LegendStockListRow = ({
   );
 
   return (
-    <tr className="stock-table-header legend-row glass-card">
+    <tr className="">
       <Column
         title="Symbol"
         sortBy={sortBy}
@@ -71,6 +72,7 @@ const LegendStockListRow = ({
         sortDescending={sortDescending}
         handleSortClick={handleSortClick}
         type="sentiment"
+        isLast
       />
     </tr>
   );
@@ -82,7 +84,8 @@ const Column = ({
   handleSortClick,
   type,
   isLong,
-  sortDescending
+  sortDescending,
+  isLast
 }: {
   sortBy: keyof Stockvalue;
   title: string;
@@ -90,6 +93,7 @@ const Column = ({
   type: keyof Stockvalue;
   isLong?: boolean,
   sortDescending: boolean;
+  isLast?: boolean;
 }) => {
   const sortIcon = () => {
     if (sortDescending) {
@@ -113,11 +117,14 @@ const Column = ({
       />
     );
   };
+  let className = "";
+  if (isLong) className += "long ";
+  if (isLast) className += "pe-3 ";
   return (
-    <th className={isLong ? "long" : ""} onClick={() => handleSortClick(type)}>
-        <div className="d-flex align-items-center my-auto">
-          <h4 className="text-center">{title}</h4>
+    <th className={className} onClick={() => handleSortClick(type)}>
+        <div className="d-flex align-items-center justify-content-end">
           {sortBy === type && sortIcon()}
+          <h5 className="text-right">{title}</h5>
         </div>
     </th>
   );

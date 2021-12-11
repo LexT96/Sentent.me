@@ -23,6 +23,7 @@ const Searchbar = ({
   return (
     <Form.Group>
       <Typeahead
+        id="Stocksearch"
         labelKey={(stock: any) => `$${stock._id} (${stock.companyName})`}
         onChange={handleChange}
         options={stocks}

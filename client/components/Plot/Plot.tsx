@@ -49,23 +49,24 @@ const Plot = ({
   const calculateMaxRelativePriceChange = () => {
     let maxChange = 0;
     mappedEntries.forEach((entry) => {
-      const priceChange = Math.abs(parseFloat(entry.value.pricePercentChange.split("%")[0]));
+      const priceChange = Math.abs(parseFloat(entry.pricePercentChange.split("%")[0]));
       if (priceChange > maxChange) maxChange = priceChange;
     });
     setMaxPriceChange(maxChange);
     return maxChange;
   };
 
-  // prpaare the mapped entries to be displayed on the plot
+  // TODO: Remove
+  // prepare the mapped entries to be displayed on the plot
   const prepareEntriesForDisplay = () => {
     const maxChange = calculateMaxRelativePriceChange();
     const priceArray: PlotEntry[] = [];
     const sentimentArray: PlotSentiment[] = [];
     mappedEntries.forEach((entry) => {
-      const entryValue: Stockvalue = entry.value;
+      const entryValue: Stockvalue = entry;
       const priceDivider = calculatePriceDivider(maxChange);
       const sentiment = Math.round(entryValue.sentiment * 100);
-      const dateSplit = entry._id.split(".");
+      const dateSplit = entry.date.split(".");
       const date = dateSplit[0] + "." + dateSplit[1][1];
       const priceChange = parseFloat(
         entryValue.pricePercentChange.split("%")[0]

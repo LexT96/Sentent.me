@@ -2,9 +2,9 @@ import React, { Dispatch, SetStateAction, useEffect } from "react";
 import {Col, Container, Row } from "react-bootstrap";
 import Navbar from "../Navbar/Navbar";
 import Searchbar from "../Searchbar";
-import {tsParticles, SingleOrMultiple, RecursivePartial, IOptions } from "tsparticles";
+import {tsParticles} from "tsparticles";
 import styles from "./Hero.module.scss";
-import particleConfig from "../../public/assets/particleJs/settings.json";
+import particleConfig from "../../public/assets/particleJs/settings";
 
 const Header = ({
   stocks,
@@ -16,7 +16,7 @@ const Header = ({
 
   useEffect(() => {
     const initializeParticleJs = () => {
-      tsParticles.load("tsparticles", particleConfig)
+      tsParticles.load("tsparticles", particleConfig);
     };
     initializeParticleJs();
   }, [])

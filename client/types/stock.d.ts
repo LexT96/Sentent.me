@@ -6,5 +6,5 @@ interface Stock {
     description: string;
     sector: string;
     image: string;
-    
+    historical?: HistoricalEntry[];
 }

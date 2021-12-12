@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { DiscreteColorLegend } from "react-vis";
 import Plot from "../Plot/Plot";
+import Plot2 from "../Plot/Plot2";
 import StockInformation from "../StockInformation/StockInformation";
 
 const Stock = ({
@@ -33,6 +34,7 @@ const Stock = ({
         />
       </div>
       <Plot mappedEntries={mappedEntries} symbol={stock._id} />
+      <Plot2 stock={stock}/>
       <StockInformation stock={stock} />
     </div>
   );

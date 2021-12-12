@@ -15,7 +15,7 @@ Sentent.me analyzes the sentiment of the top posts of the most relevant investin
 2. The relationship between the words inside of a single title gets analyzed to filter out posts that don't relate to a specific stock and to retrieve the name of the stock. This is done using the Stanford library <a href="https://github.com/stanfordnlp/stanza">stanza</a>.
 3. After this all remaining posts will be analyzed regarding their sentiment towards the stock using the <a href="https://github.com/cjhutto/vaderSentiment">VADER (Valence Aware Dictionary and sEntiment Reasoner) sentiment tool</a>. The sentiment score ranges from -100 (very negative) to 100 (very positive). If you are intered in more information about the used algorithm I would recommend reading the following paper:
 >Hutto, C.J. & Gilbert, E.E. (2014). VADER: A Parsimonious Rule-based Model for Sentiment Analysis of Social Media Text. Eighth   >International Conference on Weblogs and Social Media (ICWSM-14). Ann Arbor, MI, June 2014.
-5. Now the posts will be grouped using the stock and the average sentiment towards the stock.
+5. Now the posts will be grouped using the stock and the average sentiment towards the stock will be calculated.
 6. In the last step the stock groups and their values are provided to the NextJS frontend which uses them to generate graphs using React Vis.
 
 
@@ -30,15 +30,16 @@ Sentent.me analyzes the sentiment of the top posts of the most relevant investin
 ``` 
 git clone https://github.com/LexT96/pyStonks
 ```
-3. Navigate to your local version of this repo and create a virtual environment.
+3. Fill out the .env located in /server according to the .env.example
+4. Navigate to your local version of this repo and create a virtual environment.
 ```
 cd pystonks && pipenv install
 ```
-4. Start your virtual environment.
+5. Start your virtual environment.
 ```
 pipenv shell
 ```
-5. Run the tests.
+6. Run the tests.
 ```
 pytest -s
 ```

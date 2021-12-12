@@ -5,7 +5,7 @@ import LegendStockListRow from "../components/LegendStockRow/LegendStockRow";
 import StockTable from "../components/StockTable/StockTable";
 import TablePagination from "../components/TablePagination/TablePagination";
 import Timeframeselector from "../components/TimeframeSelector/TimeframeSelector";
-import { sortTable } from "../helpers";
+import * as helpers from "../helpers";
 
 export default function Home({
   yesterdaysValues,
@@ -30,81 +30,32 @@ export default function Home({
       if (entries.length <= 7) return entries;
       return entries.slice(entries.length - 7);
     }
-    if (entries.length <= 29) return entries;
     return entries.slice(entries.length - 30);
   };
 
-  //TODO: Remove
-  const groupStockValuesByStock = (stockValues: Stockvalue[]) => {
-    let groups: StockvalueGroup[] = [];
-    for (let i = 0; i < stockValues.length; i++) {
-      const value = stockValues[i];
-      const groupSymbols = groups.map((group: Stockvalue) => group.symbol);
-      const indexOfValue = groupSymbols.indexOf(value.symbol);
-      if (indexOfValue === -1) {
-        groups.push({ ...value, numberOfValues: 1, cummulativePrice: value.price });
-      } else {
-        const cummulativePrice = parseFloat(groups[indexOfValue].price.split("$")[1]);
-        const newPrice = parseFloat(value.price.split("$")[1]);
-        groups[indexOfValue] = {
-          ...groups[indexOfValue],
-          mentions: groups[indexOfValue].mentions + value.mentions,
-          sentiment: groups[indexOfValue].sentiment + value.sentiment,
-          lastPrice: value.price,
-          cummulativePrice: `$${cummulativePrice + newPrice}`,
-          numberOfValues: groups[indexOfValue].numberOfValues + 1,
-        };
-      }
-    }
-    return groups;
-  };
-
-  // TODO: Remove
-  const summarizeStockValueGroup = (stockValueGroup: StockvalueGroup) => {
-    const averageSentiment =
-      Math.round(
-        (100 * stockValueGroup.sentiment) / stockValueGroup.numberOfValues
-      ) / 100;
-    const firstPrice = parseFloat(stockValueGroup.price.split("$")[1]);
-    const lastPrice = stockValueGroup.lastPrice
-      ? parseFloat(stockValueGroup.lastPrice?.split("$")[1])
-      : firstPrice;
-    const priceChange = stockValueGroup.lastPrice
-      ? `${(lastPrice - firstPrice).toFixed(2)}$`
-      : stockValueGroup.priceChange;
-    const pricePercentChange = stockValueGroup.lastPrice
-      ? (((lastPrice - firstPrice) / firstPrice) * 100).toFixed(2) + "%"
-      : parseFloat(stockValueGroup.pricePercentChange.split("%")[0]).toFixed(
-          2
-        ) + "%";
-    return {
-      ...stockValueGroup,
-      sentiment: averageSentiment,
-      firstPrice: firstPrice,
-      price: lastPrice + "$",
-      lastPrice: lastPrice,
-      priceChange,
-      pricePercentChange,
-    };
-  };
-
   useEffect(() => {
-    const matchingEntries = getEntriesInTimeframe();
-    const stockValues = matchingEntries
+    // maps the entries in the current timeframe in the format needed to display them in the table
+    const createListRows = () => {
+      const matchingEntries = getEntriesInTimeframe();
+      const stockValues = matchingEntries
       .map((entry: Entry) => entry.values)
       .flat();
-    const stockValueGroups = groupStockValuesByStock(stockValues);
-    const mappedGroups = stockValueGroups.map((group: StockvalueGroup) => {
-      return summarizeStockValueGroup(group);
-    });
-    setShownValues(mappedGroups);
+      const stockValueGroups = helpers.groupStockValuesByStock(stockValues);
+      const mappedGroups = stockValueGroups.map((group: StockvalueGroup) => {
+        return helpers.summarizeStockValueGroup(group);
+      });
+      return mappedGroups;
+    }
+    setShownValues(createListRows());
   }, [timeframe]);
 
+  // handles sorting of the table
   const sortValues = useCallback(
-    () => sortTable(shownValues, sortBy, sortDescending),
+    () => helpers.sortTable(shownValues, sortBy, sortDescending),
     [shownValues, sortBy, sortDescending, pageIndexes]
   );
 
+  // get all stocks that are in the current timeframe so they can be used for the typeahead field
   const getSearchableStocks = useCallback(() => {
     const valueSymbols = shownValues.map((value) => value.symbol);
     return stocks.filter((stock) => valueSymbols.includes(stock._id));
@@ -114,14 +65,16 @@ export default function Home({
     <div>
       <Header setSelectedStock={setSelectedStock} stocks={getSearchableStocks()}/>
       <Container className="mt-5 mb-5">
-        <div className="d-flex justify-content-between align-items-center mb-4">
-          <span>{pageIndexes[0]}-{pageIndexes[1]} / {shownValues.length} Stocks</span>
+        <div className="d-flex justify-content-end mb-4">
           <Timeframeselector
             timeframe={timeframe}
             setTimeframe={setTimeframe}
           />
         </div>
-        <div className="d-flex justify-content-end"><TablePagination pageIndexes={pageIndexes} setPageIndexes={setPageIndexes} count={shownValues.length}/></div>
+        <div className="d-flex justify-content-between align-items-center">
+        <span>{pageIndexes[0] > 0 ? pageIndexes[0] : 1}-{pageIndexes[1]} / {shownValues.length} Stocks</span>
+          <TablePagination pageIndexes={pageIndexes} setPageIndexes={setPageIndexes} count={shownValues.length}/>
+          </div>
             <StockTable
               pageIndexes={pageIndexes}
               stockValues={sortValues()}

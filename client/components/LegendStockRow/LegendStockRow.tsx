@@ -14,6 +14,8 @@ const LegendStockListRow = ({
   setSortDescending: Dispatch<SetStateAction<boolean>>;
   sortValues: () => void;
 }) => {
+
+  // change column that the rows get sorted by or change sort direction
   const handleSortClick = useCallback(
     (value: keyof Stockvalue) => {
       if (value === sortBy) {
@@ -24,7 +26,7 @@ const LegendStockListRow = ({
       setSortDescending(true);
       sortValues();
     },
-    [sortBy, sortDescending, sortValues]
+    [sortBy, sortDescending]
   );
 
   return (
@@ -52,14 +54,14 @@ const LegendStockListRow = ({
           type="price"
         />
         <Column
-          title="Pricechange $"
+          title="Pricechange ($)"
           sortBy={sortBy}
           sortDescending={sortDescending}
           handleSortClick={handleSortClick}
           type="priceChange"
         />
         <Column
-          title="Pricechange %"
+          title="Pricechange (%)"
           sortBy={sortBy}
           sortDescending={sortDescending}
           handleSortClick={handleSortClick}
@@ -104,19 +106,13 @@ const Column = ({
     );
   };
 
-  const getClassName = () => {
-    let className = "cursor-pointer ";
-    if (isLast) className += "pe-3 ";
-    return className;
-  };
-
   return (
-    <th className={getClassName()} onClick={() => handleSortClick(type)}>
+    <th className={`cursor-pointer ${isLast ? "pe-3" : ""}`} onClick={() => handleSortClick(type)}>
       <div className="d-flex align-items-center justify-content-end">
         <div className={styles["arrow-container"]}>
           {sortBy === type && getSortIcon()}
         </div>
-        <h5 className="ms-2 text-right">{title}</h5>
+        <h5 className="ms-2 right">{title}</h5>
       </div>
     </th>
   );

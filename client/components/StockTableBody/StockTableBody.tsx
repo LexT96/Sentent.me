@@ -25,6 +25,7 @@ const StockTableBody = ({
   const [displayedStockValues, setDisplayedStockValues] = useState(stockValues);
 
   useEffect(() => {
+    // handles changes in the pagination indexes
     const paginateDisplayedStockValues = () => {
         const newDisplayedStockValues = stockValues.slice(pageIndexes[0], pageIndexes[1]);
         setDisplayedStockValues(() => newDisplayedStockValues);
@@ -32,8 +33,7 @@ const StockTableBody = ({
     paginateDisplayedStockValues();
   }, [pageIndexes, sortDescending, sortBy]);
 
-  //TODO: Remove
-  // Should just get all values for all stocks
+  // reduces all entries to the stockvalues that match the currently selected stock
   const findAllForStockInEntries = (entries: Entry[]) => {
     return entries.reduce((acc: Stockvalue[], entry: Entry) => {
       const stockValue = entry.values.find(

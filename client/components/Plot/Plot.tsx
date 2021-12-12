@@ -56,6 +56,8 @@ const Plot = ({
     return maxChange;
   };
 
+  // TODO: historical or webhook
+  
   // TODO: Remove
   // prepare the mapped entries to be displayed on the plot
   const prepareEntriesForDisplay = () => {

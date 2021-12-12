@@ -53,7 +53,7 @@ const StockInformation = ({ stock }: { stock: Stock }) => {
             <ListGroup.Item as="li">
               <div className="ms-2 pt-2">
                 <div className="fw-bold">Website</div>
-                <a className="link-primary" href={stock.website}>
+                <a className="link-primary" target="_blank" rel="noreferrer" href={stock.website}>
                   {stock.website}
                 </a>
               </div>

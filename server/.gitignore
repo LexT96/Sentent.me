@@ -5,3 +5,4 @@ __pycache__/
 .env
 pystonks.pem
 */.DS_Store
+.pytest_cache/

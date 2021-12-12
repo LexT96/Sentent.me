@@ -1,5 +1,6 @@
 from app.services.entry_service import group_entries_by_stock, find_all_stock_symbols_in_entries
 
+# TODO
 def test_grouping_by_stock():
     first_test_entry = {"_id": "1", "values": [{"symbol": "A"}, {"symbol": "B"}]}
     second_test_entry = {"_id": "2", "values": [{"symbol": "B"}, {"symbol": "C"}]}

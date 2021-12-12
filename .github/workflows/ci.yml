@@ -25,6 +25,7 @@ jobs:
       - name: Create build and release version
         run: |
           cd ../client
+          yarn
           yarn build
           yarn export
   Backend-CI:

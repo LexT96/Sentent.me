@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 def fetch_stock_symbols_for_today():
     client = pymongo.MongoClient(f'mongodb+srv://root:{os.environ["MONGO_PASSWORD"]}@{os.environ["MONGO_ADDRESS"]}/stonks?retryWrites=true&w=majority')
     db = client.get_database('stonks')
-    entry = db.entries.find({}).limit(1)[0]
+    entry = db.entries.find({}).limit(1).sort([('$natural',-1)])[0]
     symbols = []
     for stock_value in entry["values"]:
         symbols.append(stock_value["symbol"])

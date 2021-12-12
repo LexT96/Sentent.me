@@ -1,8 +1,7 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
-import StockRow from "../StockRow/StockRow";
-import Stock from "../Stock/Stock";
-import StockTableBody from "../StockTableBody/StockTableBody";
+import { Table } from "react-bootstrap";
 import LegendStockListRow from "../LegendStockRow/LegendStockRow";
+import StockTableBody from "../StockTableBody/StockTableBody";
 
 const StockTable = ({
   stockValues,
@@ -15,6 +14,7 @@ const StockTable = ({
   sortDescending,
   setSortDescending,
   sortValues,
+  pageIndexes
 }: {
   stockValues: Stockvalue[];
   selectedStock: string | null;
@@ -26,38 +26,28 @@ const StockTable = ({
   sortDescending: boolean;
   setSortDescending: Dispatch<SetStateAction<boolean>>;
   sortValues: () => void;
+  pageIndexes: number[]
 }) => {
-  const [displayedStockValues, setDisplayedStockValues] = useState(stockValues);
-  const [displayedStockRange, setDisplayedStockRange] = useState([0, 100]);
-
-  const paginateDisplayedStockValues = () => {
-    const start = displayedStockRange[0];
-    const end = displayedStockRange[1];
-    const newDisplayedStockValues = stockValues.slice(start, end);
-    setDisplayedStockValues(newDisplayedStockValues);
-  };
-
-  useEffect(() => {
-    paginateDisplayedStockValues();
-  }, []);
-
   return (
-    <>
-        <LegendStockListRow
-          sortBy={sortBy}
-          setSortBy={setSortBy}
-          sortDescending={sortDescending}
-          setSortDescending={setSortDescending}
-          sortValues={sortValues}
-        />
+    <Table responsive="md" borderless>
+      <LegendStockListRow
+        sortBy={sortBy}
+        setSortBy={setSortBy}
+        sortDescending={sortDescending}
+        setSortDescending={setSortDescending}
+        sortValues={sortValues}
+      />
       <StockTableBody
         stockValues={stockValues}
         selectedStock={selectedStock}
         setSelectedStock={setSelectedStock}
         entries={entries}
         stocks={stocks}
+        sortBy={sortBy}
+        sortDescending={sortDescending}
+        pageIndexes={pageIndexes}
       />
-    </>
+    </Table>
   );
 };
 

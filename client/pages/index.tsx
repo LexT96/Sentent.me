@@ -3,7 +3,9 @@ import { Container, Table } from "react-bootstrap";
 import Header from "../components/Hero/Hero";
 import LegendStockListRow from "../components/LegendStockRow/LegendStockRow";
 import StockTable from "../components/StockTable/StockTable";
+import TablePagination from "../components/TablePagination/TablePagination";
 import Timeframeselector from "../components/TimeframeSelector/TimeframeSelector";
+import { sortTable } from "../helpers";
 
 export default function Home({
   yesterdaysValues,
@@ -19,6 +21,7 @@ export default function Home({
   const [selectedStock, setSelectedStock] = useState<string>("");
   const [shownValues, setShownValues] = useState(yesterdaysValues);
   const [timeframe, setTimeframe] = useState("D");
+  const [pageIndexes, setPageIndexes] = useState([0,100]);
 
   // slice the entries to match the selected timeframe
   const getEntriesInTimeframe = () => {
@@ -85,12 +88,6 @@ export default function Home({
     };
   };
 
-  //TODO: Remove
-  const getSearchableStocks = useCallback(() => {
-    const valueSymbols = shownValues.map((value) => value.symbol);
-    return stocks.filter((stock) => valueSymbols.includes(stock._id));
-  }, [shownValues]);
-
   useEffect(() => {
     const matchingEntries = getEntriesInTimeframe();
     const stockValues = matchingEntries
@@ -103,54 +100,30 @@ export default function Home({
     setShownValues(mappedGroups);
   }, [timeframe]);
 
-  //TODO: cleanup?
-  const sortValues = useCallback(() => {
-    return shownValues.sort((value1: Stockvalue, value2: Stockvalue) => {
-      if (sortBy === "symbol") {
-        if (sortDescending) return value2.symbol.localeCompare(value1.symbol);
-        return value1.symbol.localeCompare(value2.symbol);
-      }
-      if (sortBy === "mentions") {
-        if (sortDescending) return value1.mentions < value2.mentions ? 1 : -1;
-        return value1.mentions > value2.mentions ? 1 : -1;
-      }
-      if (sortBy === "price") {
-        const firstPrice = parseFloat(value1.price.split("$")[0]);
-        const secondPrice = parseFloat(value2.price.split("$")[0]);
-        if (sortDescending) return firstPrice < secondPrice ? 1 : -1;
-        return firstPrice > secondPrice ? 1 : -1;
-      }
-      if (sortBy === "priceChange") {
-        const firstPriceChange = parseFloat(value1.priceChange);
-        const secondPriceChange = parseFloat(value2.priceChange);
-        if (sortDescending) return firstPriceChange < secondPriceChange ? 1 : -1;
-        return firstPriceChange < secondPriceChange ? -1 : 1;
-      }
-      if (sortBy === "pricePercentChange") {
-        const firstPricePercentChange = parseFloat(value1.pricePercentChange);
-        const secondPricePercentChange = parseFloat(value2.pricePercentChange);
-        if (sortDescending)
-          return firstPricePercentChange < secondPricePercentChange ? 1 : -1;
-        return firstPricePercentChange > secondPricePercentChange ? 1 : -1;
-      }
-      if (sortDescending) return value1.sentiment < value2.sentiment ? 1 : -1;
-      return value1.sentiment > value2.sentiment ? 1 : -1;
-    });
-  }, [sortBy, sortDescending, shownValues]);
+  const sortValues = useCallback(
+    () => sortTable(shownValues, sortBy, sortDescending),
+    [shownValues, sortBy, sortDescending, pageIndexes]
+  );
+
+  const getSearchableStocks = useCallback(() => {
+    const valueSymbols = shownValues.map((value) => value.symbol);
+    return stocks.filter((stock) => valueSymbols.includes(stock._id));
+  }, [shownValues, stocks]);
 
   return (
     <div>
       <Header setSelectedStock={setSelectedStock} stocks={getSearchableStocks()}/>
       <Container className="mt-5 mb-5">
         <div className="d-flex justify-content-between align-items-center mb-4">
-          <span>{shownValues.length} Stocks</span>
+          <span>{pageIndexes[0]}-{pageIndexes[1]} / {shownValues.length} Stocks</span>
           <Timeframeselector
             timeframe={timeframe}
             setTimeframe={setTimeframe}
           />
         </div>
-        <Table responsive="md" borderless>
+        <div className="d-flex justify-content-end"><TablePagination pageIndexes={pageIndexes} setPageIndexes={setPageIndexes} count={shownValues.length}/></div>
             <StockTable
+              pageIndexes={pageIndexes}
               stockValues={sortValues()}
               selectedStock={selectedStock}
               setSelectedStock={setSelectedStock}
@@ -162,7 +135,7 @@ export default function Home({
               setSortDescending={setSortDescending}
               sortValues={sortValues}
             />
-        </Table>
+        <div className="d-flex justify-content-end"><TablePagination pageIndexes={pageIndexes} setPageIndexes={setPageIndexes} count={shownValues.length}/></div>
       </Container>
     </div>
   );
@@ -178,10 +151,8 @@ export async function getStaticProps() {
 );
   const yesterdaysEntry = entries[entries.length - 1];
   const yesterdaysValues = yesterdaysEntry.values;
-  //TODO: Remove validation
   return {
     props: { yesterdaysValues, entries, stocks },
-    revalidate: 14400
   };
 }
 

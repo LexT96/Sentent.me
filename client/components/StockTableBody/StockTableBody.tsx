@@ -8,30 +8,29 @@ const StockTableBody = ({
   setSelectedStock,
   entries,
   stocks,
+  sortBy,
+  sortDescending,
+  pageIndexes
 }: {
   stockValues: Stockvalue[];
   selectedStock: string | null;
   setSelectedStock: Dispatch<SetStateAction<string>>;
   entries: Entry[];
   stocks: Stock[];
+  sortBy: keyof Stockvalue;
+  sortDescending: boolean;
+  pageIndexes: number[];
 }) => {
 
-    console.log(stockValues)
-
   const [displayedStockValues, setDisplayedStockValues] = useState(stockValues);
-  const [displayedStockRange, setDisplayedStockRange] = useState([0, 100]);
-
 
   useEffect(() => {
     const paginateDisplayedStockValues = () => {
-        const start = displayedStockRange[0];
-        const end = displayedStockRange[1];
-        const newDisplayedStockValues = stockValues;
-        setDisplayedStockValues(newDisplayedStockValues);
+        const newDisplayedStockValues = stockValues.slice(pageIndexes[0], pageIndexes[1]);
+        setDisplayedStockValues(() => newDisplayedStockValues);
       };
-
     paginateDisplayedStockValues();
-  }, [stockValues, displayedStockRange]);
+  }, [pageIndexes, sortDescending, sortBy]);
 
   //TODO: Remove
   // Should just get all values for all stocks
@@ -45,6 +44,10 @@ const StockTableBody = ({
       }
       return acc;
     }, []);
+  }
+
+  const findSelectedStock = () => {
+    return stocks.find((s: Stock) => s._id === selectedStock) ?? stocks[0]
   }
 
   return (
@@ -61,7 +64,7 @@ const StockTableBody = ({
               <tr className="stock-body">
                 <td colSpan={6} className="px-3">
                 <Stock
-                  stock={stocks.find((s: Stock) => s._id === selectedStock) ?? stocks[0]}
+                  stock={findSelectedStock()}
                   mappedEntries={findAllForStockInEntries(entries)}
                 />
                 </td>

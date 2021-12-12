@@ -44,7 +44,7 @@ export default function Plot({ stock, mappedEntries }: {stock: Stock, mappedEntr
     }, []);
 
     const formatDateForXAxis = (date: string) => {
-       if (!date) return;
+       if (!date) return "";
         const dateSplit = date.split(".");
         return dateSplit[0] + "." + dateSplit[1];
     }

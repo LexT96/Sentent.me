@@ -40,7 +40,7 @@ const Navbar = () => {
             <img
               height={32}
               width={32}
-              src="/assets/github.png"
+              src="/assets/images/github.png"
               className="icon"
               alt="Github"
             />

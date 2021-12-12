@@ -1,12 +1,22 @@
-from psaw import PushshiftAPI
 from datetime import datetime, timedelta
 import stanza
-from app.Post import Post
-from app.services.db_service import get_all_stocks
-from collections import defaultdict
 import praw
+from app.models.Post import Post
+from collections import defaultdict
 import os
+from app.services.stock_api_service import fetch_all_symbols
+from typing import List
 
+# contains the searched subreddits
+subreddit_names = [
+    "wallstreetbets",
+    "investing",
+    "stocks",
+    "wallstreetbetselite",
+    "wallstreetbetsnew",
+]
+
+# fetches all posts that were made in the last 24 hours in the relevant subreddits
 def fetch_posts():
     reddit = praw.Reddit(client_id=os.environ["PRAW_ID"], \
                      client_secret=os.environ["PRAW_SECRET"], \
@@ -14,26 +24,29 @@ def fetch_posts():
                      username=os.environ["PRAW_USER"], \
                      password=os.environ["PRAW_PASSWORD"])
     posts = []
-    subredditNames = ["wallstreetbets", "investing", "stocks", "wallstreetbetselite", "wallstreetbetsnew", "mauerstrassenwetten"]
-    for subredditName in subredditNames:
+
+    #iterate through all subreddits
+    for subredditName in subreddit_names:
         subreddit = reddit.subreddit(subredditName)
+        #iterates through all submissions in the subreddit
         for submission in subreddit.new(limit=1000):
             utcPostTime = submission.created
             submissionDate = datetime.utcfromtimestamp(utcPostTime)
             currentTime = datetime.utcnow()
-
             submissionDelta = currentTime - submissionDate
-
             submissionDelta = str(submissionDelta)
-            if 'day' not in submissionDelta:
-                posts.append(Post(submission.title,submission.score,submission.subreddit,submission.created_utc,None,None))
-                submission.comments.replace_more(limit=20)
-                for comment in submission.comments:
-                    commentTitle = comment.body
-                    commentScore = comment.score
-                    commentSub = comment.subreddit
-                    commentUTC = comment.created_utc
-                    posts.append(Post(commentTitle, commentScore, commentSub, commentUTC, None, None))
+            # remove submissions that are older than 24 hours
+            if 'day' in submissionDelta:
+                continue
+            posts.append(Post(submission.title,submission.score,submission.subreddit,submission.created_utc,None,None))
+            # iterates through comments in the submission (max 32 * 20 comments)
+            submission.comments.replace_more(limit=20)
+            for comment in submission.comments:
+                commentTitle = comment.body
+                commentScore = comment.score
+                commentSub = comment.subreddit
+                commentUTC = comment.created_utc
+                posts.append(Post(commentTitle, commentScore, commentSub, commentUTC, None, None))
     return posts
 
 def __setup_stanza():
@@ -41,51 +54,54 @@ def __setup_stanza():
     nlp = stanza.Pipeline('en')
     return nlp
 
-def __find_stock_in_sentence(sentence):
-    obj = None
-    nsubj = None
-    propn = None
+# finds the potential stock in a sentence
+def __find_symbol_in_sentence(symbol_list: List[str], sentence: str):
     words = sentence.words
     for i in range(len(words)):
         word = words[i]
+        # if the sentence contains a cashtag immediately breaks the loop and returns the symbol
+        # checks if the current word is $ and if the 
+        # sentence has a following word and if the following word is a potential cashtag
         if word.text == "$" and i < len(words) - 1 and __is_cashtag(words[i+1]):
-            return words[i+1].text
-        if word.deprel == "obj":
-            obj = word.text
-        if word.deprel == "nsubj" and word.xpos == "NNP":
-            nsubj = word.text
-        if word.upos == "PROPN" and word.xpos == "NNP":
-            propn = word.text
-    if obj is not None:
-        return obj
-    if nsubj is not None:
-        return nsubj
-    if propn is not None:
-        return propn
+            return [words[i+1].text]
+        # checks if the current word is an object and is a stock symbol
+        if word.deprel == "obj" and word.text in symbol_list:
+            return word.text
+        # checks if the current word is an nominal subject, a proper noun (singular) and is included in the symbol list
+        if word.deprel == "nsubj" and word.xpos == "NNP" and word.text in symbol_list:
+            return word.text     
     return None
 
-def __is_cashtag(word):
+# checks if the word is a cashtag (e.g. $TSLA)
+def __is_cashtag(word: str):
     word = word.text
     return len(word) >= 1 and len(word) <= 6 and not any(char.isdigit() for char in word)
 
-def map_titles_to_stocks(posts):
+# takes all posts and adds the stock symbol to them if it can be found in the sentence
+def add_stock_to_posts(posts: List[Post]):
+    symbols = fetch_all_symbols()
     nlp = __setup_stanza()
     for post in posts:
+        # splits every sentence in the post into a list of words including their types
         doc = nlp(post.title)
-        stock = __find_stock_in_sentence(doc.sentences[0])
-        if stock is not None:
-            post.stock = stock
+        for sentence in doc.sentences:
+            stock = __find_symbol_in_sentence(symbols, sentence)
+            if stock is not None:
+                post.stock = stock
     return posts
 
-def group_posts_by_stock(posts):
+# iterates through all posts and returns a dictionary with the stock symbol as key and
+# a list of the relevant posts as value
+def group_posts_by_stock(posts: List[Post]):
     groups = defaultdict(list)
     for post in posts:
         groups[post.stock].append(post)
     return list(groups.values())
 
+# return all stocks including their stock symbol
 def get_posts():
     posts = fetch_posts()
-    posts = map_titles_to_stocks(posts)
+    posts = add_stock_to_posts(posts)
     return posts
 
 

@@ -11,19 +11,18 @@ const StockListRow = ({
 }) => {
   const sentiment = Math.round(values.sentiment * 100);
   const priceChange = parseFloat(values.priceChange);
+
+  // show detailed informations on selected stock or hide it again
   const onRowClick = () => {
     if (values.symbol === selectedStock) {
       setSelectedStock("");
       return;
     }
     setSelectedStock(values.symbol);
-  }
+  };
+
   return (
-    <tr
-      id={values.symbol}
-      style={{ cursor: "pointer" }}
-      onClick={onRowClick}
-    >
+    <tr id={values.symbol} className="cursor-pointer" onClick={onRowClick}>
       <td>
         <h5>${values.symbol}</h5>
       </td>
@@ -45,7 +44,7 @@ const StockListRow = ({
       </td>
       <td>
         <h5
-        className="pe-2"
+          className="pe-2"
           style={{
             color:
               sentiment >= 50 ? "#0E0" : sentiment <= -50 ? "#F00" : "#FFF",

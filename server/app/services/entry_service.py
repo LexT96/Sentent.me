@@ -4,35 +4,7 @@ from app.services.db_service import get_entries, get_all_stocks, insert_stock, i
 from app.services.reddit_service import get_posts, group_posts_by_stock
 from app.services.sentiment_service import add_sentiment_to_posts, calculate_average_sentiment
 
-# # iterates through all entries and groups them by stocksymbols
-# def group_entries_by_stock(entries):
-#     entries_by_stock = []
-#     symbols = find_all_stock_symbols_in_entries(entries)
-#     for symbol in symbols:
-#         for entry in entries:
-#             for value in entry["values"]:
-#                 if value["symbol"] == symbol:
-#                     value_with_date = value.copy()
-#                     value_with_date["date"] = entry["_id"]
-#                     entries_by_stock.append(value_with_date)
-#     return entries_by_stock
 
-
-# # find all unique stock symbols
-# def find_all_stock_symbols_in_entries(entries):
-#     symbols = set()
-#     for entry in entries:
-#         for value in entry["values"]:
-#             symbols.add(value["symbol"])
-#     return symbols
-
-# # TODO
-# # finds the relevant stock inside of the values of a single entry
-# def _find_stock_by_symbol(entry, symbol):
-#     for stock_value in entry.values:
-#         if stock_value.symbol == entry.stock:
-#             return stock_value
-#     return None
 
 
 # creates a new stock entry and adds it to the database
@@ -66,3 +38,39 @@ def create_entry(stock_data):
     insert_entry(entry)
     return entry
 
+
+
+
+
+
+
+
+# # iterates through all entries and groups them by stocksymbols
+# def group_entries_by_stock(entries):
+#     entries_by_stock = []
+#     symbols = find_all_stock_symbols_in_entries(entries)
+#     for symbol in symbols:
+#         for entry in entries:
+#             for value in entry["values"]:
+#                 if value["symbol"] == symbol:
+#                     value_with_date = value.copy()
+#                     value_with_date["date"] = entry["_id"]
+#                     entries_by_stock.append(value_with_date)
+#     return entries_by_stock
+
+
+# # find all unique stock symbols
+# def find_all_stock_symbols_in_entries(entries):
+#     symbols = set()
+#     for entry in entries:
+#         for value in entry["values"]:
+#             symbols.add(value["symbol"])
+#     return symbols
+
+# # TODO
+# # finds the relevant stock inside of the values of a single entry
+# def _find_stock_by_symbol(entry, symbol):
+#     for stock_value in entry.values:
+#         if stock_value.symbol == entry.stock:
+#             return stock_value
+#     return None

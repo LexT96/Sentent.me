@@ -23,21 +23,6 @@ def insert_stocks(stocks):
     result = db.stocks.insert_many(stocks,False)
     return result
 
-def insert_prices_for_today(stocks):
-    db = __setup()
-    today = datetime.today().strftime('%d.%m.%Y')
-    db.entries.insert({"_id": today, "values": [] })
-    mapped_stocks = map(lambda stock: {
-        "symbol": stock["symbol"],
-        "price": stock["lastsale"],
-        "change": stock["pctchange"] }, stocks)
-    for stock in mapped_stocks:
-        db.entries.update(
-            {"_id": today}, 
-            {"$push": {"values": stock}}
-        )
-    return True
-
 def insert_entry(entry):
     db = __setup()
     result = db.entries.insert(entry)

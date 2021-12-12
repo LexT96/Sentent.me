@@ -14,7 +14,20 @@ defaults:
     working-directory: ./server
 
 jobs:
-  CI:
+  Frontend-CI:
+    name: Build Frontend
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+      - name: Build
+        run: |
+          cd ../client
+          yarn
+          yarn build
+  Backend-CI:
     runs-on: ubuntu-latest
     env:
       MONGO_ADDRESS: ${{ secrets.MONGO_ADDRESS }}

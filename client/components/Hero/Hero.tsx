@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction, useEffect } from "react";
 import {Col, Container, Row } from "react-bootstrap";
 import Navbar from "../Navbar/Navbar";
-import Searchbar from "../Searchbar";
+import Searchbar from "../Searchbar/Searchbar";
 import {tsParticles} from "tsparticles";
 import styles from "./Hero.module.scss";
 import particleConfig from "../../public/assets/particleJs/settings";

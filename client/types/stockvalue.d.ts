@@ -6,4 +6,5 @@ interface Stockvalue {
     pricePercentChange: string;
     mentions: number;
     price: string;
+    date: string;
 }

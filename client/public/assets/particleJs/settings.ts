@@ -2,7 +2,7 @@ import { RecursivePartial, SingleOrMultiple, IOptions } from "react-tsparticles"
 
 export const config = {
   "particles": {
-    "number": { "value": 70, "density": { "enable": true, "value_area": 800 } },
+    "number": { "value": 40, "density": { "enable": true, "value_area": 800 } },
     "color": { "value": "#ffffff" },
     "shape": {
       "type": "circle",

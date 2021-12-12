@@ -88,3 +88,8 @@ export const summarizeStockValueGroup = (stockValueGroup: StockvalueGroup) => {
     pricePercentChange: pricePercentChange.toFixed(2) + "%",
   };
 };
+
+export const formatDateForXAxis = (date: string) => {
+  const dateSplit = date.split(".");
+  return dateSplit[0] + "." + dateSplit[1];
+}

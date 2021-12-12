@@ -1,123 +1,112 @@
+import moment from "moment";
 import React, { useCallback, useEffect, useState } from "react";
-import {
-  FlexibleWidthXYPlot,
-  Hint,
-  HorizontalGridLines,
-  LineSeries,
-  LineSeriesPoint,
-  VerticalBarSeries,
-  VerticalGridLines,
-  XAxis,
-  YAxis,
-} from "react-vis";
+import { ListGroup } from "react-bootstrap";
+import { Bar, ComposedChart, Label, Line, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import CustomTooltip from "../CustomTooltip/CustomTooltip";
 
-const GRID_LINES = {
-  stroke: "#ccc",
-  opacity: 0.1
-};
+export default function Plot({ stock, mappedEntries }: {stock: Stock, mappedEntries: any}) {
+    const [historicalData, setHistoricalData] = useState(stock.historical ?? [])
 
-const Plot = ({
-  mappedEntries,
-  symbol,
-}: {
-  mappedEntries: any[];
-  symbol: string;
-}) => {
-  const [opacity, setOpacity] = useState(0);
-  const [priceEntries, setPriceEntries] = useState<any>(null);
-  const [sentimentEntries, setSentimentEntries] = useState<any>(null);
-  const [value, setValue] = useState<null | LineSeriesPoint>(null);
-  const [maxPriceChange, setMaxPriceChange] = useState<number>(0);
+    // changes the date format from historicaldata entries from "YYYY-MM-DD" to "DD.MM.YYYY"
+    // to make it match with the format of the mappedEntries
+    const formatDateInHistoricalData = useCallback((data: any) => {
+        const formattedData = data.map((historicalEntry: any) => {
+            const date = moment(historicalEntry.date, "YYYY-MM-DD").format("DD.MM.YYYY");
+            return { ...historicalEntry, date };
+        });
+        return formattedData;
+    }, [stock]);
 
-  useEffect(() => {
-    setTimeout(() => setOpacity(1), 300);
-  }, []);
+    // takes the historical data and adds the sentiment from the mappedEntries to it
+    const addSentimentToHistoricalData = useCallback((data: any) => {
+        const formattedData = data.map((historicalEntry: any) => {
+            const rawSentiment = mappedEntries.find((entry: any) => entry.date === historicalEntry.date)?.sentiment;
+            const sentiment = Math.round(rawSentiment * 100);
+            return { ...historicalEntry, sentiment };
+        });
+        return formattedData;
+    }, [stock]);
 
-  // calculate the tick format on the y axis to make sure it doesn't get cut off
-  const calculateTickFormat = (v: number) => {
-    if (maxPriceChange > 100) return Math.round(v / (100 / maxPriceChange));
-    if (maxPriceChange > 25) return v;
-    return v/4;
-  }
+    const prepareHistoricalDataForDisplay = useCallback(() => {
+    const dataWithCorrectDate = formatDateInHistoricalData(historicalData);
+    const dataWithSentiment = addSentimentToHistoricalData(dataWithCorrectDate);
+    return dataWithSentiment;
+    }, [stock]);
 
-  const calculatePriceDivider = (maxChange: number) => {
-    if (maxChange > 100) return 0.5;
-    if (maxChange > 25) return 1;
-    return 4;
-  }
+    useEffect(() => {
+      setHistoricalData(prepareHistoricalDataForDisplay());
+    }, []);
 
-  const calculateMaxRelativePriceChange = () => {
-    let maxChange = 0;
-    mappedEntries.forEach((entry) => {
-      const priceChange = Math.abs(parseFloat(entry.pricePercentChange.split("%")[0]));
-      if (priceChange > maxChange) maxChange = priceChange;
-    });
-    setMaxPriceChange(maxChange);
-    return maxChange;
-  };
+    const formatDateForXAxis = (date: string) => {
+        const dateSplit = date.split(".");
+        return dateSplit[0] + "." + dateSplit[1];
+    }
 
-  // TODO: historical or webhook
-  
-  // TODO: Remove
-  // prepare the mapped entries to be displayed on the plot
-  const prepareEntriesForDisplay = () => {
-    const maxChange = calculateMaxRelativePriceChange();
-    const priceArray: PlotEntry[] = [];
-    const sentimentArray: PlotSentiment[] = [];
-    mappedEntries.forEach((entry) => {
-      const entryValue: Stockvalue = entry;
-      const priceDivider = calculatePriceDivider(maxChange);
-      const sentiment = Math.round(entryValue.sentiment * 100);
-      const dateSplit = entry.date.split(".");
-      const date = dateSplit[0] + "." + dateSplit[1][1];
-      const priceChange = parseFloat(
-        entryValue.pricePercentChange.split("%")[0]
-      );
-      priceArray.push({
-        x: date,
-        y: priceChange * priceDivider,
-        "Pricechange (%)": priceChange + "%",
-        "Pricechange ($)": entryValue.priceChange,
-        Price: entryValue.price,
-        Sentiment: sentiment,
-      });
-      sentimentArray.push({
-        x: date,
-        y: sentiment,
-        y0: 0,
-      });
-    });
-    setPriceEntries(priceArray);
-    setSentimentEntries(sentimentArray);
-  };
-
-  useEffect(() => {
-    prepareEntriesForDisplay();
-  }, [mappedEntries, symbol]);
-
-  return (
-    <FlexibleWidthXYPlot
-      style={{ opacity, transition: "opacity 1s" }}
-      onMouseLeave={() => setValue(null)}
-      height={500}
-      yDomain={[-105, 105]}
-      margin={{ bottom: 100, left: 50, right: 50 }}
-      xType={"ordinal"}
-    >
-      <HorizontalGridLines style={GRID_LINES} />
-      <VerticalGridLines style={GRID_LINES} />
-      <VerticalBarSeries fill={"#64dfdf"} barWidth={0.3} data={sentimentEntries} />
-      <LineSeries
-        onNearestXY={(value) => setValue(value)}
-        stroke={"#6930c3"}
-        data={priceEntries}
-      />
-      <XAxis style={{fontSize: "0.5rem"}}  />
-      {value && <Hint value={value} />}
-      <YAxis tickFormat={(v) => `${calculateTickFormat(v)}%`} title="Pricechange" />
-      <YAxis orientation="right" title="Sentiment" />
-    </FlexibleWidthXYPlot>
-  );
-};
-
-export default Plot;
+    const formatPriceChange = (priceChange: number) => {
+        return priceChange + "%";
+    }
+      
+    return (
+      <ResponsiveContainer minHeight={320} width="100%">
+        <ComposedChart data={historicalData}>
+          <defs>
+            <linearGradient
+              id={`sentiment-gradient`}
+              x1="0"
+              y1="0"
+              x2="0"
+              y2="1"
+            >
+              <stop offset="0%" stopColor={"#80ffdb"} stopOpacity={0.9} />
+              <stop offset="90%" stopColor={"#80ffdb"} stopOpacity={0.2} />
+            </linearGradient>
+          </defs>
+          <XAxis
+            dataKey="date"
+            interval={2}
+            axisLine={true}
+            tickLine={true}
+            tickFormatter={(date: string) => formatDateForXAxis(date)}
+            reversed={true}
+          />
+          <YAxis
+            axisLine={true}
+            tickLine={true}
+            domain={["auto", "auto"]}
+            width={80}
+            tickFormatter={(priceChange: number) =>
+              formatPriceChange(priceChange)
+            }
+            yAxisId="left"
+            dx={3}
+            allowDataOverflow={false}
+          />
+          <YAxis
+            axisLine={true}
+            tickLine={true}
+            width={50}
+            domain={[-100, 100]}
+            yAxisId="right"
+            orientation="right"
+            dx={3}
+            allowDataOverflow={false}
+          />
+          <Tooltip
+            content={(content: any) => <CustomTooltip content={content} />}
+          />
+          <Bar
+            yAxisId="right"
+            dataKey="sentiment"
+            barSize={20}
+            fill={"url(#sentiment-gradient"}
+          />
+          <Line
+            yAxisId="left"
+            dataKey={"changePercent"}
+            stroke={"#6930c3"}
+            strokeWidth={3}
+          />
+        </ComposedChart>
+      </ResponsiveContainer>
+    );
+}

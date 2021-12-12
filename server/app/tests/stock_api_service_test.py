@@ -1,4 +1,4 @@
-from app.services.stock_api_service import fetch_tickers, fetch_stock_information
+from app.services.stock_api_service import fetch_stock_information
 
 def test_stock_information_fetching():
     stock_information = fetch_stock_information("AAPL")

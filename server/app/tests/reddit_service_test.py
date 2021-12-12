@@ -1,5 +1,5 @@
-from app.services.reddit_service import fetch_posts, map_titles_to_stocks, group_posts_by_stock
-from app.Post import Post
+from app.services.reddit_service import add_stock_to_posts, group_posts_by_stock
+from app.models.Post import Post
 
 def test_stock_mapping():
     posts = [
@@ -9,7 +9,7 @@ def test_stock_mapping():
         Post("$RXT Rackspace has a good Q2 but stock still goes down -15%. "
             "Institution manipulation again!",3,"","")
             ]
-    mapped = map_titles_to_stocks(posts)
+    mapped = add_stock_to_posts(posts)
     assert mapped[0].stock == "AMZN"
     assert mapped[1].stock == "GME"
     assert mapped[2].stock == "BB"

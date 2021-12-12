@@ -39,7 +39,7 @@ const Timeframeselector = ({
         className={timeframe === "D" ? styles["button--active"] : styles.button}
         onClick={() => onTimeframeClick(TimeFrame.DAY)}
       >
-        Today
+        Last trading day
       </Button>
     </ButtonGroup>
   );

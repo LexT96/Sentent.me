@@ -1,4 +1,4 @@
-from app.models.Post import Post
+from app.classes.Post import Post
 from app.services.sentiment_service import add_sentiment_to_posts, calculate_average_sentiment
 
 def test_positive():

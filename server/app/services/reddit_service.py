@@ -1,10 +1,11 @@
 from datetime import datetime, timedelta
 import stanza
 import praw
-from app.models.Post import Post
+from app.classes.Post import Post
 from collections import defaultdict
 import os
 from app.services.stock_api_service import fetch_all_symbols
+from app.services.sentiment_service import add_sentiment_to_posts
 from typing import List
 
 # contains the searched subreddits
@@ -57,19 +58,26 @@ def __setup_stanza():
 # finds the potential stock in a sentence
 def __find_symbol_in_sentence(symbol_list: List[str], sentence: str):
     words = sentence.words
+    # if the post does not contain a potential obj or nsubj stock,
+    # take the noun that matches a stock
+    fallback_stock = None
     for i in range(len(words)):
         word = words[i]
         # if the sentence contains a cashtag immediately breaks the loop and returns the symbol
         # checks if the current word is $ and if the 
         # sentence has a following word and if the following word is a potential cashtag
-        if word.text == "$" and i < len(words) - 1 and __is_cashtag(words[i+1]):
-            return [words[i+1].text]
+        if word.text == "$" and i < len(words) - 1 and __is_cashtag(words[i+1]) and word.text in symbol_list:
+            return words[i+1].text
         # checks if the current word is an object and is a stock symbol
         if word.deprel == "obj" and word.text in symbol_list:
             return word.text
         # checks if the current word is an nominal subject, a proper noun (singular) and is included in the symbol list
         if word.deprel == "nsubj" and word.xpos == "NNP" and word.text in symbol_list:
-            return word.text     
+            return word.text
+        if word.upos == "PROPN" and word.text in symbol_list:
+            fallback_stock = word.text
+    if fallback_stock is not None:
+        return fallback_stock
     return None
 
 # checks if the word is a cashtag (e.g. $TSLA)
@@ -85,9 +93,9 @@ def add_stock_to_posts(posts: List[Post]):
         # splits every sentence in the post into a list of words including their types
         doc = nlp(post.title)
         for sentence in doc.sentences:
-            stock = __find_symbol_in_sentence(symbols, sentence)
-            if stock is not None:
-                post.stock = stock
+            symbol = __find_symbol_in_sentence(symbols, sentence)
+            if symbol is not None:
+                post.stock = symbol
     return posts
 
 # iterates through all posts and returns a dictionary with the stock symbol as key and
@@ -99,9 +107,10 @@ def group_posts_by_stock(posts: List[Post]):
     return list(groups.values())
 
 # return all stocks including their stock symbol
-def get_posts():
+def     get_posts():
     posts = fetch_posts()
     posts = add_stock_to_posts(posts)
+    posts = add_sentiment_to_posts(posts)
     return posts
 
 

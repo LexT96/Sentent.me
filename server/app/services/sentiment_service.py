@@ -1,5 +1,5 @@
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
-from app.models.Post import Post
+from app.classes.Post import Post
 from typing import List
 
 def __get_vader_sentiment_of_title(title: str):        

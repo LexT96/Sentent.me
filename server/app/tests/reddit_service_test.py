@@ -1,11 +1,11 @@
 from app.services.reddit_service import add_stock_to_posts, group_posts_by_stock
-from app.models.Post import Post
+from app.classes.Post import Post
 
 def test_stock_mapping():
     posts = [
         Post("AMZN is great", 223, "", ""),
-        Post("The worst stock right now is GME", 223, "", ""),
-        Post("BB is going crazy like my ex, it's already at $67", 696, "", ""),
+        Post("I believe that GME is going to be huge", 223, "", ""),
+        Post("What's your take on BB?", 696, "", ""),
         Post("$RXT Rackspace has a good Q2 but stock still goes down -15%. "
             "Institution manipulation again!",3,"","")
             ]

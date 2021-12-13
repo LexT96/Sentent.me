@@ -8,7 +8,7 @@ def fetch_stock_information(symbol: str):
     request = requests.get(url)
     information = request.json()
     # if the given symbol matches a stock add the "_id" attribute to it and return it
-    if len(information) > 1:
+    if len(information) >= 1:
         information[0]["_id"] = information[0]["symbol"]
         return information[0]
     return None
@@ -26,7 +26,7 @@ def fetch_all_symbols():
         mapped_list.append(ticker["Ticker"])
     return mapped_list
 
-# fetches all tickers and maps them to the needed format to be saved as a entry value
+# fetches all tickers and maps them to the needed format to be saved as an entry value
 def fetch_tickers_for_entry_values():
     tickers = fetch_all_tickers()
     mapped_list = []

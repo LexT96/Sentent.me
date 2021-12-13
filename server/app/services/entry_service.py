@@ -1,19 +1,22 @@
 from datetime import datetime
+import os, requests
 from app.services.stock_api_service import fetch_stock_information
-from app.services.db_service import get_entries, get_all_stocks, insert_stock, insert_entry
+from app.services.db_service import get_all_stocks, insert_stock, insert_entry
 from app.services.reddit_service import get_posts, group_posts_by_stock
-from app.services.sentiment_service import add_sentiment_to_posts, calculate_average_sentiment
+from app.services.sentiment_service import calculate_average_sentiment
 
 
-
+# triggers a webhook to rebuild the netlify web-app
+def rebuild_netlify():
+    request = requests.post(os.environ['NETLIFY_REBUILD_HOOK'])
+    if request.status_code != 200:
+        print ("Error rebuilding netlify")    
 
 # creates a new stock entry and adds it to the database
 def create_entry(stock_data):
     posts = get_posts()
     stocks = get_all_stocks()
-    posts = add_sentiment_to_posts(posts)
     grouped_posts = group_posts_by_stock(posts)
-    sorted(grouped_posts, key=len, reverse=True)
     entry_values = []
     # iterates through all grouped stocks, gets the other needed attributes
     # and saves them as an new entry in the entry collection
@@ -36,7 +39,11 @@ def create_entry(stock_data):
     today = datetime.today().strftime('%d.%m.%Y')
     entry = {"_id": today, "values": entry_values}
     insert_entry(entry)
+    if os.environ["NETLIFY_REBUILD_HOOK"]:
+        rebuild_netlify()
     return entry
+
+
 
 
 
